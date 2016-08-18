@@ -1,0 +1,23 @@
+{
+  "name": "mmm-nfl",
+  "version": "1.0.0",
+  "description": "National Football League Module for MagicMirror2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fewieden/MMM-NFL.git"
+  },
+  "keywords": [
+    "MagicMirror",
+    "NFL"
+  ],
+  "author": "fewieden",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fewieden/MMM-NFL/issues"
+  },
+  "homepage": "https://github.com/fewieden/MMM-NFL#readme",
+  "dependencies": {
+    "request": "^2.74.0",
+    "xml2js": "^0.4.17"
+  }
+}

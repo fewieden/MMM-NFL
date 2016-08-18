@@ -1,0 +1,17 @@
+.MMM-NFL .table {
+    border-spacing: 10px 0px;
+    border-collapse: separate;
+    text-align: center;
+}
+
+.MMM-NFL .icon {
+    -webkit-filter: grayscale(100%);
+}
+
+.MMM-NFL .row {
+    vertical-align: middle;
+}
+
+.MMM-NFL .subrow {
+    vertical-align: top;
+}
