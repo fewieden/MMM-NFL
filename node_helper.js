@@ -50,6 +50,7 @@ module.exports = NodeHelper.create({
     },
 
     setMode: function(details){
+	console.log(details);
         var current_date = new Date();
         if(this.mode === "regular" && details.w >= 17 && (current_date.getMonth() < 1 || current_date.getMonth() > 10)){
             this.mode = "post";
