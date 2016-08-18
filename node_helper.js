@@ -44,13 +44,12 @@ module.exports = NodeHelper.create({
                     this.sendSocketNotification("SCORES", {scores: result.ss.gms[0].g, details: result.ss.gms[0].$});
                 });
             } else {
-            console.log("Error getting nfl scores " + response.statusCode);
+                console.log("Error getting nfl scores " + response.statusCode);
             }
         });
     },
 
     setMode: function(details){
-	console.log(details);
         var current_date = new Date();
         if(this.mode === "regular" && details.w >= 17 && (current_date.getMonth() < 1 || current_date.getMonth() > 10)){
             this.mode = "post";
