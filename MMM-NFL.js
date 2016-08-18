@@ -9,6 +9,10 @@ Module.register("MMM-NFL", {
 
     mode: "Pre-Season",
 
+    details: {
+        y: (new Date()).getFullYear()
+    },
+
     defaults: {
         colored: false,
         helmets: false,
@@ -33,7 +37,6 @@ Module.register("MMM-NFL", {
 
     socketNotificationReceived: function (notification, payload) {
         if (notification === "SCORES") {
-            Log.info(payload.scores);
             this.scores = payload.scores;
             this.details = payload.details;
             this.updateDom(1000);
