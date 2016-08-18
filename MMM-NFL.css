@@ -12,6 +12,6 @@
     vertical-align: middle;
 }
 
-.MMM-NFL .subrow {
-    vertical-align: top;
+.MMM-NFL .away {
+    -webkit-transform: scaleX(-1);
 }

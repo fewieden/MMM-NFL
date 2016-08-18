@@ -139,6 +139,9 @@ Module.register("MMM-NFL", {
         if(!this.config.colored){
             awayIcon.classList.add("icon");
         }
+        if(this.config.helmets){
+            awayIcon.classList.add("away");
+        }
         awayLogo.appendChild(awayIcon);
         row.appendChild(awayLogo);
 
