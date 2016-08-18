@@ -11,6 +11,13 @@ const NodeHelper = require("node_helper");
 
 module.exports = NodeHelper.create({
 
+    urls: {
+        regular: "http://www.nfl.com/liveupdate/scorestrip/ss.xml",
+        post: "http://www.nfl.com/liveupdate/scorestrip/postseason/ss.xml"
+    },
+
+    mode: "regular",
+
     start: function() {
         console.log("Starting module: " + this.name);
     },
@@ -18,25 +25,39 @@ module.exports = NodeHelper.create({
     socketNotificationReceived: function(notification, payload) {
         if(notification === 'CONFIG'){
             this.config = payload;
-            this.getData({url: "http://www.nfl.com/liveupdate/scorestrip/ss.xml"});
+            this.getData();
             setInterval(() => {
-                this.getData({url: "http://www.nfl.com/liveupdate/scorestrip/ss.xml"});
-        }, this.config.reloadInterval);
+                this.getData();
+            }, this.config.reloadInterval);
         } 
     },
 
-    getData: function(options) {
+    getData: function() {
+        var options = {url: this.urls[this.mode]};
         request(options, (error, response, body) => {
             if (response.statusCode === 200) {
-            parser(body, (err, result) => {
-                if(err) {
-                    console.log(err);
-                }
-                this.sendSocketNotification("SCORES", {scores: result.ss.gms[0].g, details: result.ss.gms[0].$});
-            });
-        } else {
+                parser(body, (err, result) => {
+                    if(err) {
+                        console.log(err);
+                    }
+                    this.setMode(result.ss.gms[0].$);
+                    this.sendSocketNotification("SCORES", {scores: result.ss.gms[0].g, details: result.ss.gms[0].$});
+                });
+            } else {
             console.log("Error getting nfl scores " + response.statusCode);
+            }
+        });
+    },
+
+    setMode: function(details){
+        var current_date = new Date();
+        if(this.mode === "regular" && details.w >= 17 && (current_date.getMonth() < 1 || current_date.getMonth() > 10)){
+            this.mode = "post";
+            this.getData();
+        } else if(this.mode === "post" && current_date.getMonth() >= 5){
+            this.mode = "regular";
+            this.getData();
         }
-    });
+
     }
 });
