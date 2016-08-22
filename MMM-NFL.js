@@ -17,6 +17,7 @@ Module.register("MMM-NFL", {
         colored: false,
         helmets: false,
         network: true,
+        format: "ddd h:mm",
         reloadInterval: 30 * 60 * 1000       // every 30 minutes
     },
 
@@ -25,6 +26,10 @@ Module.register("MMM-NFL", {
             en: "translations/en.json",
             de: "translations/de.json"
         };
+    },
+
+    getScripts: function() {
+        return ["moment.js"];
     },
 
     getStyles: function () {
@@ -111,7 +116,13 @@ Module.register("MMM-NFL", {
         row.classList.add("row");
 
         var date = document.createElement("td");
-        date.innerHTML = this.translate(data.d) + " " + data.t;
+        date.innerHTML = moment(
+            data.eid.slice(0, 4) + "-" +
+            data.eid.slice(4, 6) + "-" +
+            data.eid.slice(6, 8) + "T" +
+            ("0" + data.t).slice(-5) + ":00-05:00")
+            .add(12, 'h')
+            .format(this.config.format);
         row.appendChild(date);
 
         var homeTeam = document.createElement("td");
