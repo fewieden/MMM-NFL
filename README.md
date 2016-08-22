@@ -31,4 +31,5 @@ National Football League Module for MagicMirror<sup>2</sup>
 | --- | --- | --- |
 | `colored` | `false` | Remove black/white filter of logos/helmets. |
 | `helmets` | `false` | Show helmets instead of logo. |
+| `network` | `true` | Display network/tv column. |
 | `reloadInterval` | `1800000` (30 mins) | How often should the data be fetched |

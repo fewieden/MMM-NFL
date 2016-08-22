@@ -16,6 +16,7 @@ Module.register("MMM-NFL", {
     defaults: {
         colored: false,
         helmets: false,
+        network: true,
         reloadInterval: 30 * 60 * 1000       // every 30 minutes
     },
 
@@ -94,11 +95,13 @@ Module.register("MMM-NFL", {
         awayLabel.setAttribute("colspan", 3);
         labelRow.appendChild(awayLabel);
 
-        var tvLabel = document.createElement("th");
-        var tvIcon = document.createElement("i");
-        tvIcon.classList.add("fa", "fa-television", "dimmed");
-        tvLabel.appendChild(tvIcon);
-        labelRow.appendChild(tvLabel);
+        if(this.config.network){
+            var tvLabel = document.createElement("th");
+            var tvIcon = document.createElement("i");
+            tvIcon.classList.add("fa", "fa-television", "dimmed");
+            tvLabel.appendChild(tvIcon);
+            labelRow.appendChild(tvLabel);
+        }
 
         return labelRow;
     },
@@ -152,10 +155,12 @@ Module.register("MMM-NFL", {
         awayTeam.innerHTML = data.v;
         row.appendChild(awayTeam);
 
-        var tv = document.createElement("td");
-        tv.classList.add("dimmed");
-        tv.innerHTML = data.n ? data.n : "X";
-        row.appendChild(tv);
+        if(this.config.network){
+            var tv = document.createElement("td");
+            tv.classList.add("dimmed");
+            tv.innerHTML = data.hasOwnProperty("n") ? data.n : "X";
+            row.appendChild(tv);
+        }
 
         return row;
     }
