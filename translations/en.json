@@ -1,5 +1,12 @@
 {
   "LOADING": "Loading...",
   "HOME": "Home",
-  "AWAY": "Away"
+  "AWAY": "Away",
+  "Mon": "Mo",
+  "Tue": "Tu",
+  "Wed": "We",
+  "Thu": "Th",
+  "Fri": "Fr",
+  "Sat": "Sa",
+  "Sun": "Su"
 }
