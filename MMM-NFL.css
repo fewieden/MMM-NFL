@@ -1,3 +1,9 @@
+@-webkit-keyframes livePulse {
+    0% {color: #999999;}
+    50% {color: #000000;}
+    100% {color: #999999;}
+}
+
 .MMM-NFL .table {
     border-spacing: 10px 0px;
     border-collapse: separate;
@@ -14,4 +20,13 @@
 
 .MMM-NFL .away {
     -webkit-transform: scaleX(-1);
+}
+
+.MMM-NFL .live {
+    -webkit-animation: livePulse 1s infinite;
+}
+
+.MMM-NFL .live-style {
+    font-size: 10px;
+    display: block;
 }

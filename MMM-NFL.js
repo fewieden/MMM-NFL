@@ -13,6 +13,19 @@ Module.register("MMM-NFL", {
         y: (new Date()).getFullYear()
     },
 
+    states: {
+        "1": "1ST QUARTER",
+        "2": "2ND QUARTER",
+        "3": "3RD QUARTER",
+        "4": "4th QUARTER",
+        "H": "HALFTIME",
+        "OT": "OVERTIME",
+        "F": "FINAL",
+        "FO": "FINAL OVERTIME",
+        "T": "TIE",
+        "P": "UPCOMING"
+    },
+
     defaults: {
         colored: false,
         helmets: false,
@@ -111,7 +124,25 @@ Module.register("MMM-NFL", {
         row.classList.add("row");
 
         var date = document.createElement("td");
-        date.innerHTML = this.translate(data.d) + " " + data.t;
+        if(data.q in ["1", "2", "3", "4", "H", "OT"]){
+            var quarter = document.createElement("div");
+            quarter.innerHTML = this.translate(this.states[data.q]);
+            if(data.hasOwnProperty("k")){
+                quarter.classList.add("live-style");
+                date.appendChild(quarter);
+                var time = document.createElement("div");
+                time.classList.add("live-style");
+                time.innerHTML = data.k;
+                date.appendChild(time);
+            } else {
+                date.appendChild(quarter);
+            }
+        } else if(data.q === "P"){
+            date.innerHTML = this.translate(data.d) + " " + data.t;
+        } else {
+            date.innerHTML = this.translate(this.states.F);
+            date.classList.add("dimmed");
+        }
         row.appendChild(date);
 
         var homeTeam = document.createElement("td");
@@ -128,6 +159,9 @@ Module.register("MMM-NFL", {
         row.appendChild(homeLogo);
 
         var homeScore = document.createElement("td");
+        if(data.q in ["1", "2", "3", "4", "H", "OT"]){
+            homeScore.classList.add("live");
+        }
         homeScore.innerHTML = data.hs;
         row.appendChild(homeScore);
 
@@ -136,6 +170,9 @@ Module.register("MMM-NFL", {
         row.appendChild(vs);
 
         var awayScore = document.createElement("td");
+        if(data.q in ["1", "2", "3", "4", "H", "OT"]){
+            awayScore.classList.add("live");
+        }
         awayScore.innerHTML = data.vs;
         row.appendChild(awayScore);
 
