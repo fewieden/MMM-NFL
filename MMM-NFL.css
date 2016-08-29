@@ -1,6 +1,6 @@
 @-webkit-keyframes MMM-NFL-pulse {
     0% {opacity: 1;}
-    50% {oppacity: 0;}
+    50% {opacity: 0;}
     100% {opacity: 1;}
 }
 
@@ -23,7 +23,7 @@
 }
 
 .MMM-NFL .redzone {
-    -webkit-animation: MMM-NFL-pulse 1s infinite;
+    -webkit-animation: MMM-NFL-pulse 2s infinite;
 }
 
 .MMM-NFL .live {

@@ -161,7 +161,7 @@ Module.register("MMM-NFL", {
         var homeScore = document.createElement("td");
         var homeScoreSpan = document.createElement("span");
         homeScoreSpan.innerHTML = data.hs;
-        homeScore.appendChild(homeScoreSpan)
+        homeScore.appendChild(homeScoreSpan);
         this.appendBallPossession(data, false, homeScore);
         row.appendChild(homeScore);
 
@@ -172,7 +172,7 @@ Module.register("MMM-NFL", {
         var awayScore = document.createElement("td");
         var awayScoreSpan = document.createElement("span");
         awayScoreSpan.innerHTML = data.vs;
-        awayScore.appendChild(awayScoreSpan)
+        awayScore.appendChild(awayScoreSpan);
         this.appendBallPossession(data, false, awayScore);
         row.appendChild(awayScore);
 
