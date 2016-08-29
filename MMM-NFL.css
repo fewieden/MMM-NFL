@@ -1,4 +1,4 @@
-@-webkit-keyframes livePulse {
+@-webkit-keyframes MMM-NFL-pulse {
     0% {color: #999999;}
     50% {color: #000000;}
     100% {color: #999999;}
@@ -22,11 +22,12 @@
     -webkit-transform: scaleX(-1);
 }
 
-.MMM-NFL .live {
-    -webkit-animation: livePulse 1s infinite;
+.MMM-NFL .redzone {
+    -webkit-animation: MMM-NFL-pulse 1s infinite;
 }
 
-.MMM-NFL .live-style {
+.MMM-NFL .live {
     font-size: 10px;
+    line-height: 15px;
     display: block;
 }

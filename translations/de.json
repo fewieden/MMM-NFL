@@ -2,14 +2,15 @@
   "LOADING": "Lade...",
   "HOME": "Heim",
   "AWAY": "Auswärts",
-  "1ST QUARTER": "1. Viertel",
-  "2ND QUARTER": "2. Viertel",
-  "3RD QUARTER": "3. Viertel",
-  "4th QUARTER": "4. Viertel",
-  "HALFTIME": "Halbzeit",
-  "OVERTIME": "Verlängerung",
+  "1ST_QUARTER": "1. Viertel",
+  "2ND_QUARTER": "2. Viertel",
+  "3RD_QUARTER": "3. Viertel",
+  "4TH_QUARTER": "4. Viertel",
+  "HALF_TIME": "Halbzeit",
+  "OVER_TIME": "Verlängerung",
   "FINAL": "Beendet",
-  "FINAL OVERTIME": "Verlängerung beendet",
+  "FINAL_OVERTIME": "Verlängerung beendet",
   "TIE": "Unentschieden",
-  "UPCOMING": "Bevorstehend"
+  "UPCOMING": "Bevorstehend",
+  "TIME_LEFT": "übrig"
 }

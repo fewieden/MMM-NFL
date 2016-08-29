@@ -2,14 +2,15 @@
   "LOADING": "Loading...",
   "HOME": "Home",
   "AWAY": "Away",
-  "1ST QUARTER": "1st Quarter",
-  "2ND QUARTER": "2nd Quarter",
-  "3RD QUARTER": "3rd Quarter",
-  "4th QUARTER": "4th Quarter",
-  "HALFTIME": "Half Time",
-  "OVERTIME": "Over Time",
+  "1ST_QUARTER": "1st Quarter",
+  "2ND_QUARTER": "2nd Quarter",
+  "3RD_QUARTER": "3rd Quarter",
+  "4TH_QUARTER": "4th Quarter",
+  "HALF_TIME": "Half Time",
+  "OVER_TIME": "Over Time",
   "FINAL": "Final",
-  "FINAL OVERTIME": "Final Over Time",
+  "FINAL_OVERTIME": "Final Over Time",
   "TIE": "Tie",
-  "UPCOMING": "Upcoming"
+  "UPCOMING": "Upcoming",
+  "TIME_LEFT": "left"
 }

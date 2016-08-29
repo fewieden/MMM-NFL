@@ -14,14 +14,14 @@ Module.register("MMM-NFL", {
     },
 
     states: {
-        "1": "1ST QUARTER",
-        "2": "2ND QUARTER",
-        "3": "3RD QUARTER",
-        "4": "4th QUARTER",
-        "H": "HALFTIME",
-        "OT": "OVERTIME",
+        "1": "1ST_QUARTER",
+        "2": "2ND_QUARTER",
+        "3": "3RD_QUARTER",
+        "4": "4th_QUARTER",
+        "H": "HALF_TIME",
+        "OT": "OVER_TIME",
         "F": "FINAL",
-        "FO": "FINAL OVERTIME",
+        "FO": "FINAL_OVERTIME",
         "T": "TIE",
         "P": "UPCOMING"
     },
@@ -128,11 +128,11 @@ Module.register("MMM-NFL", {
             var quarter = document.createElement("div");
             quarter.innerHTML = this.translate(this.states[data.q]);
             if(data.hasOwnProperty("k")){
-                quarter.classList.add("live-style");
+                quarter.classList.add("live");
                 date.appendChild(quarter);
                 var time = document.createElement("div");
-                time.classList.add("live-style");
-                time.innerHTML = data.k;
+                time.classList.add("live");
+                time.innerHTML = data.k + ' ' + this.translate('TIME_LEFT');
                 date.appendChild(time);
             } else {
                 date.appendChild(quarter);
@@ -140,7 +140,7 @@ Module.register("MMM-NFL", {
         } else if(data.q === "P"){
             date.innerHTML = this.translate(data.d) + " " + data.t;
         } else {
-            date.innerHTML = this.translate(this.states.F);
+            date.innerHTML = this.translate(this.states[data.q]);
             date.classList.add("dimmed");
         }
         row.appendChild(date);
@@ -156,12 +156,10 @@ Module.register("MMM-NFL", {
             homeIcon.classList.add("icon");
         }
         homeLogo.appendChild(homeIcon);
+        this.appendBallPossession(data, true, homeLogo);
         row.appendChild(homeLogo);
 
         var homeScore = document.createElement("td");
-        if(data.q in ["1", "2", "3", "4", "H", "OT"]){
-            homeScore.classList.add("live");
-        }
         homeScore.innerHTML = data.hs;
         row.appendChild(homeScore);
 
@@ -170,9 +168,6 @@ Module.register("MMM-NFL", {
         row.appendChild(vs);
 
         var awayScore = document.createElement("td");
-        if(data.q in ["1", "2", "3", "4", "H", "OT"]){
-            awayScore.classList.add("live");
-        }
         awayScore.innerHTML = data.vs;
         row.appendChild(awayScore);
 
@@ -186,6 +181,7 @@ Module.register("MMM-NFL", {
             awayIcon.classList.add("away");
         }
         awayLogo.appendChild(awayIcon);
+        this.appendBallPossession(data, false, awayLogo);
         row.appendChild(awayLogo);
 
         var awayTeam = document.createElement("td");
@@ -200,5 +196,17 @@ Module.register("MMM-NFL", {
         }
 
         return row;
+    },
+
+    appendBallPossession: function(data, homeTeam, appendTo){
+        var team = homeTeam ? data.h : data.v;
+        if(data.p === team){
+            var ballIcon = document.createElement("img");
+            ballIcon.src = this.file("icons/football.png");
+            if(data.rz === "1"){
+                ballIcon.classList.add("redzone");
+            }
+            appendTo.appendChild(ballIcon);
+        }
     }
 });
