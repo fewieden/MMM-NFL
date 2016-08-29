@@ -159,10 +159,10 @@ Module.register("MMM-NFL", {
         row.appendChild(homeLogo);
 
         var homeScore = document.createElement("td");
+        this.appendBallPossession(data, true, homeScore);
         var homeScoreSpan = document.createElement("span");
         homeScoreSpan.innerHTML = data.hs;
         homeScore.appendChild(homeScoreSpan);
-        this.appendBallPossession(data, false, homeScore);
         row.appendChild(homeScore);
 
         var vs = document.createElement("td");
