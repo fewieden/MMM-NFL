@@ -203,6 +203,11 @@ Module.register("MMM-NFL", {
         if(data.p === team){
             var ballIcon = document.createElement("img");
             ballIcon.src = this.file("icons/football.png");
+            if(homeTeam){
+                ballIcon.classList.add("ball-home");
+            } else {
+                ballIcon.classList.add("ball-away");
+            }
             if(data.rz === "1"){
                 ballIcon.classList.add("redzone");
             }
