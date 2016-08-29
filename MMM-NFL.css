@@ -1,7 +1,7 @@
 @-webkit-keyframes MMM-NFL-pulse {
-    0% {color: #999999;}
-    50% {color: #000000;}
-    100% {color: #999999;}
+    0% {opacity: 1;}
+    50% {oppacity: 0;}
+    100% {opacity: 1;}
 }
 
 .MMM-NFL .table {

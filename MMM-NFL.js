@@ -156,11 +156,13 @@ Module.register("MMM-NFL", {
             homeIcon.classList.add("icon");
         }
         homeLogo.appendChild(homeIcon);
-        this.appendBallPossession(data, true, homeLogo);
         row.appendChild(homeLogo);
 
         var homeScore = document.createElement("td");
-        homeScore.innerHTML = data.hs;
+        var homeScoreSpan = document.createElement("span");
+        homeScoreSpan.innerHTML = data.hs;
+        homeScore.appendChild(homeScoreSpan)
+        this.appendBallPossession(data, false, homeScore);
         row.appendChild(homeScore);
 
         var vs = document.createElement("td");
@@ -168,7 +170,10 @@ Module.register("MMM-NFL", {
         row.appendChild(vs);
 
         var awayScore = document.createElement("td");
-        awayScore.innerHTML = data.vs;
+        var awayScoreSpan = document.createElement("span");
+        awayScoreSpan.innerHTML = data.vs;
+        awayScore.appendChild(awayScoreSpan)
+        this.appendBallPossession(data, false, awayScore);
         row.appendChild(awayScore);
 
         var awayLogo = document.createElement("td");
@@ -181,7 +186,6 @@ Module.register("MMM-NFL", {
             awayIcon.classList.add("away");
         }
         awayLogo.appendChild(awayIcon);
-        this.appendBallPossession(data, false, awayLogo);
         row.appendChild(awayLogo);
 
         var awayTeam = document.createElement("td");
