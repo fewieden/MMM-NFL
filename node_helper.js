@@ -89,14 +89,14 @@ module.exports = NodeHelper.create({
                 if(next === null){
                     next = this.scores[i].$;
                 }
-            } else if(in_game.indexOf(this.scores[i].$.q) !== -1 || this.scores[i].$.starttime > now && live.matches.indexOf(this.scores[i].$.gsis) === -1){
+            } else if(in_game.indexOf(this.scores[i].$.q) !== -1 || this.scores[i].$.starttime > now && this.live.matches.indexOf(this.scores[i].$.gsis) === -1){
                 all_ended = false;
-                live.matches.push(this.scores[i].$.gsis);
-                live.state = true;
-            } else if(ended.indexOf(this.scores[i].$.q) !== -1 && (index = live.matches.indexOf(this.scores[i].$.gsis)) !== -1){
-                live.matches.splice(index, 1);
-                if(live.matches.length === 0){
-                    live.state = false;
+                this.live.matches.push(this.scores[i].$.gsis);
+                this.live.state = true;
+            } else if(ended.indexOf(this.scores[i].$.q) !== -1 && (index = this.live.matches.indexOf(this.scores[i].$.gsis)) !== -1){
+                this.live.matches.splice(index, 1);
+                if(this.live.matches.length === 0){
+                    this.live.state = false;
                 }
             }
         }
@@ -105,7 +105,7 @@ module.exports = NodeHelper.create({
             this.nextMatch = null;
         }
 
-        if(this.nextMatch === null && all_ended === false || live.state === true){
+        if(this.nextMatch === null && all_ended === false || this.live.state === true){
             this.nextMatch = {
                 id: next.id,
                 time: next.starttime
@@ -116,7 +116,7 @@ module.exports = NodeHelper.create({
     },
 
     fetchOnLiveState: function(){
-        if(live.state === true){
+        if(this.live.state === true){
             console.log('MMM-NFL: live.state === true -> fetch new data');
             this.getData();
         }
