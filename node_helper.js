@@ -107,11 +107,11 @@ module.exports = NodeHelper.create({
 
         if(this.nextMatch === null && all_ended === false || this.live.state === true){
             this.nextMatch = {
-                id: next.id,
+                id: next.gsis,
                 time: next.starttime
             }
         }
-        console.log('MMM-NFL: nextmatch -> ' + this.nextMatch === null ? null : JSON.stringify(this.nextMatch));
+        console.log('MMM-NFL: nextmatch -> ' + (this.nextMatch === null ? null : JSON.stringify(this.nextMatch)));
         console.log('MMM-NFL: live -> ' + JSON.stringify(this.live));
     },
 
