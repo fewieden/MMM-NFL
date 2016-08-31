@@ -111,10 +111,13 @@ module.exports = NodeHelper.create({
                 time: next.starttime
             }
         }
+        console.log('MMM-NFL: nextmatch -> ' + this.nextMatch === null ? null : JSON.stringify(this.nextMatch));
+        console.log('MMM-NFL: live -> ' + JSON.stringify(this.live));
     },
 
     fetchOnLiveState: function(){
         if(live.state === true){
+            console.log('MMM-NFL: live.state === true -> fetch new data');
             this.getData();
         }
     }
