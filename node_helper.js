@@ -89,7 +89,7 @@ module.exports = NodeHelper.create({
                 if(next === null){
                     next = this.scores[i].$;
                 }
-            } else if(in_game.indexOf(this.scores[i].$.q) !== -1 || this.scores[i].$.starttime > now && this.live.matches.indexOf(this.scores[i].$.gsis) === -1){
+            } else if((in_game.indexOf(this.scores[i].$.q) !== -1 || this.scores[i].$.starttime > now) && this.live.matches.indexOf(this.scores[i].$.gsis) === -1){
                 all_ended = false;
                 this.live.matches.push(this.scores[i].$.gsis);
                 this.live.state = true;
