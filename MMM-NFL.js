@@ -146,7 +146,11 @@ Module.register("MMM-NFL", {
         row.appendChild(date);
 
         var homeTeam = document.createElement("td");
-        homeTeam.innerHTML = data.h;
+        homeTeam.classList.add("align-right");
+        this.appendBallPossession(data, true, homeTeam);
+        var homeTeamSpan = document.createElement("span");
+        homeTeamSpan.innerHTML = data.h;
+        homeTeam.appendChild(homeTeamSpan);
         row.appendChild(homeTeam);
 
         var homeLogo = document.createElement("td");
@@ -159,10 +163,7 @@ Module.register("MMM-NFL", {
         row.appendChild(homeLogo);
 
         var homeScore = document.createElement("td");
-        this.appendBallPossession(data, true, homeScore);
-        var homeScoreSpan = document.createElement("span");
-        homeScoreSpan.innerHTML = data.hs;
-        homeScore.appendChild(homeScoreSpan);
+        homeScore.innerHTML = data.hs;
         row.appendChild(homeScore);
 
         var vs = document.createElement("td");
@@ -170,10 +171,7 @@ Module.register("MMM-NFL", {
         row.appendChild(vs);
 
         var awayScore = document.createElement("td");
-        var awayScoreSpan = document.createElement("span");
-        awayScoreSpan.innerHTML = data.vs;
-        awayScore.appendChild(awayScoreSpan);
-        this.appendBallPossession(data, false, awayScore);
+        awayScore.innerHTML = data.vs;
         row.appendChild(awayScore);
 
         var awayLogo = document.createElement("td");
@@ -189,7 +187,11 @@ Module.register("MMM-NFL", {
         row.appendChild(awayLogo);
 
         var awayTeam = document.createElement("td");
-        awayTeam.innerHTML = data.v;
+        awayTeam.classList.add("align-left");
+        var awayTeamSpan = document.createElement("span");
+        awayTeamSpan.innerHTML = data.v;
+        awayTeam.appendChild(awayTeamSpan);
+        this.appendBallPossession(data, false, awayTeam);
         row.appendChild(awayTeam);
 
         if(this.config.network){
