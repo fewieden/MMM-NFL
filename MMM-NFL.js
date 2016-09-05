@@ -7,10 +7,15 @@
 
 Module.register("MMM-NFL", {
 
-    mode: "Pre-Season",
+    modes: {
+        "P": "Pre-Season",
+        "R": "Regular-Season",
+        "POST": "Post-Season"
+    },
 
     details: {
-        y: (new Date()).getFullYear()
+        y: (new Date()).getFullYear(),
+        t: "P"
     },
 
     states: {
@@ -68,7 +73,7 @@ Module.register("MMM-NFL", {
 
         var wrapper = document.createElement("div");
         var header = document.createElement("header");
-        header.innerHTML = "NFL " + this.mode + " " + this.details.y;
+        header.innerHTML = "NFL " + this.modes[this.details.t] + " " + this.details.y;
         wrapper.appendChild(header);
 
         if (!this.scores) {
