@@ -30,6 +30,7 @@ Module.register("MMM-NFL", {
         colored: false,
         helmets: false,
         network: true,
+        focus_on: false,
         format: "ddd h:mm",
         reloadInterval: 30 * 60 * 1000       // every 30 minutes
     },
@@ -82,7 +83,7 @@ Module.register("MMM-NFL", {
             table.appendChild(this.createLabelRow());
 
             for (var i = 0; i < this.scores.length; i++) {
-                table.appendChild(this.createDataRow(this.scores[i].$));
+                this.appendDataRow(this.scores[i].$, table);
             }
 
             wrapper.appendChild(table);
@@ -125,95 +126,97 @@ Module.register("MMM-NFL", {
         return labelRow;
     },
 
-    createDataRow: function (data) {
-        var row = document.createElement("tr");
-        row.classList.add("row");
+    appendDataRow: function (data, appendTo) {
+        if(!focus_on || focus_on.indexOf(data.h) !== -1 || focus_on.indexOf(data.v) !== -1) {
+            var row = document.createElement("tr");
+            row.classList.add("row");
 
-        var date = document.createElement("td");
-        if(data.q in ["1", "2", "3", "4", "H", "OT"]){
-            var quarter = document.createElement("div");
-            quarter.innerHTML = this.translate(this.states[data.q]);
-            if(data.hasOwnProperty("k")){
-                quarter.classList.add("live");
-                date.appendChild(quarter);
-                var time = document.createElement("div");
-                time.classList.add("live");
-                time.innerHTML = data.k + ' ' + this.translate('TIME_LEFT');
-                date.appendChild(time);
+            var date = document.createElement("td");
+            if (data.q in ["1", "2", "3", "4", "H", "OT"]) {
+                var quarter = document.createElement("div");
+                quarter.innerHTML = this.translate(this.states[data.q]);
+                if (data.hasOwnProperty("k")) {
+                    quarter.classList.add("live");
+                    date.appendChild(quarter);
+                    var time = document.createElement("div");
+                    time.classList.add("live");
+                    time.innerHTML = data.k + ' ' + this.translate('TIME_LEFT');
+                    date.appendChild(time);
+                } else {
+                    date.appendChild(quarter);
+                }
+            } else if (data.q === "P") {
+                date.innerHTML = moment(
+                    data.eid.slice(0, 4) + "-" +
+                    data.eid.slice(4, 6) + "-" +
+                    data.eid.slice(6, 8) + "T" +
+                    ("0" + data.t).slice(-5) + ":00-05:00")
+                    .add(12, 'h')
+                    .format(this.config.format);
             } else {
-                date.appendChild(quarter);
+                date.innerHTML = this.translate(this.states[data.q]);
+                date.classList.add("dimmed");
             }
-        } else if(data.q === "P"){
-            date.innerHTML = moment(
-                data.eid.slice(0, 4) + "-" +
-                data.eid.slice(4, 6) + "-" +
-                data.eid.slice(6, 8) + "T" +
-                ("0" + data.t).slice(-5) + ":00-05:00")
-                .add(12, 'h')
-                .format(this.config.format);
-        } else {
-            date.innerHTML = this.translate(this.states[data.q]);
-            date.classList.add("dimmed");
+            row.appendChild(date);
+
+            var homeTeam = document.createElement("td");
+            homeTeam.classList.add("align-right");
+            this.appendBallPossession(data, true, homeTeam);
+            var homeTeamSpan = document.createElement("span");
+            homeTeamSpan.innerHTML = data.h;
+            homeTeam.appendChild(homeTeamSpan);
+            row.appendChild(homeTeam);
+
+            var homeLogo = document.createElement("td");
+            var homeIcon = document.createElement("img");
+            homeIcon.src = this.file("icons/" + data.h + (this.config.helmets ? "_helmet" : "") + ".png");
+            if (!this.config.colored) {
+                homeIcon.classList.add("icon");
+            }
+            homeLogo.appendChild(homeIcon);
+            row.appendChild(homeLogo);
+
+            var homeScore = document.createElement("td");
+            homeScore.innerHTML = data.hs;
+            row.appendChild(homeScore);
+
+            var vs = document.createElement("td");
+            vs.innerHTML = ":";
+            row.appendChild(vs);
+
+            var awayScore = document.createElement("td");
+            awayScore.innerHTML = data.vs;
+            row.appendChild(awayScore);
+
+            var awayLogo = document.createElement("td");
+            var awayIcon = document.createElement("img");
+            awayIcon.src = this.file("icons/" + data.v + (this.config.helmets ? "_helmet" : "") + ".png");
+            if (!this.config.colored) {
+                awayIcon.classList.add("icon");
+            }
+            if (this.config.helmets) {
+                awayIcon.classList.add("away");
+            }
+            awayLogo.appendChild(awayIcon);
+            row.appendChild(awayLogo);
+
+            var awayTeam = document.createElement("td");
+            awayTeam.classList.add("align-left");
+            var awayTeamSpan = document.createElement("span");
+            awayTeamSpan.innerHTML = data.v;
+            awayTeam.appendChild(awayTeamSpan);
+            this.appendBallPossession(data, false, awayTeam);
+            row.appendChild(awayTeam);
+
+            if (this.config.network) {
+                var tv = document.createElement("td");
+                tv.classList.add("dimmed");
+                tv.innerHTML = data.hasOwnProperty("n") ? data.n : "X";
+                row.appendChild(tv);
+            }
+
+            appendTo.appendChild(row);
         }
-        row.appendChild(date);
-
-        var homeTeam = document.createElement("td");
-        homeTeam.classList.add("align-right");
-        this.appendBallPossession(data, true, homeTeam);
-        var homeTeamSpan = document.createElement("span");
-        homeTeamSpan.innerHTML = data.h;
-        homeTeam.appendChild(homeTeamSpan);
-        row.appendChild(homeTeam);
-
-        var homeLogo = document.createElement("td");
-        var homeIcon = document.createElement("img");
-        homeIcon.src = this.file("icons/" + data.h + (this.config.helmets ? "_helmet" : "") + ".png");
-        if(!this.config.colored){
-            homeIcon.classList.add("icon");
-        }
-        homeLogo.appendChild(homeIcon);
-        row.appendChild(homeLogo);
-
-        var homeScore = document.createElement("td");
-        homeScore.innerHTML = data.hs;
-        row.appendChild(homeScore);
-
-        var vs = document.createElement("td");
-        vs.innerHTML = ":";
-        row.appendChild(vs);
-
-        var awayScore = document.createElement("td");
-        awayScore.innerHTML = data.vs;
-        row.appendChild(awayScore);
-
-        var awayLogo = document.createElement("td");
-        var awayIcon = document.createElement("img");
-        awayIcon.src = this.file("icons/" + data.v + (this.config.helmets ? "_helmet" : "") + ".png");
-        if(!this.config.colored){
-            awayIcon.classList.add("icon");
-        }
-        if(this.config.helmets){
-            awayIcon.classList.add("away");
-        }
-        awayLogo.appendChild(awayIcon);
-        row.appendChild(awayLogo);
-
-        var awayTeam = document.createElement("td");
-        awayTeam.classList.add("align-left");
-        var awayTeamSpan = document.createElement("span");
-        awayTeamSpan.innerHTML = data.v;
-        awayTeam.appendChild(awayTeamSpan);
-        this.appendBallPossession(data, false, awayTeam);
-        row.appendChild(awayTeam);
-
-        if(this.config.network){
-            var tv = document.createElement("td");
-            tv.classList.add("dimmed");
-            tv.innerHTML = data.hasOwnProperty("n") ? data.n : "X";
-            row.appendChild(tv);
-        }
-
-        return row;
     },
 
     appendBallPossession: function(data, homeTeam, appendTo){
