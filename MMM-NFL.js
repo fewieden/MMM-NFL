@@ -13,6 +13,19 @@ Module.register("MMM-NFL", {
         y: (new Date()).getFullYear()
     },
 
+    states: {
+        "1": "1ST_QUARTER",
+        "2": "2ND_QUARTER",
+        "3": "3RD_QUARTER",
+        "4": "4th_QUARTER",
+        "H": "HALF_TIME",
+        "OT": "OVER_TIME",
+        "F": "FINAL",
+        "FO": "FINAL_OVERTIME",
+        "T": "TIE",
+        "P": "UPCOMING"
+    },
+
     defaults: {
         colored: false,
         helmets: false,
@@ -39,6 +52,7 @@ Module.register("MMM-NFL", {
     start: function () {
         Log.info("Starting module: " + this.name);
         this.sendSocketNotification("CONFIG", this.config);
+        moment.locale(config.language);
     },
 
     socketNotificationReceived: function (notification, payload) {
@@ -116,17 +130,39 @@ Module.register("MMM-NFL", {
         row.classList.add("row");
 
         var date = document.createElement("td");
-        date.innerHTML = moment(
-            data.eid.slice(0, 4) + "-" +
-            data.eid.slice(4, 6) + "-" +
-            data.eid.slice(6, 8) + "T" +
-            ("0" + data.t).slice(-5) + ":00-05:00")
-            .add(12, 'h')
-            .format(this.config.format);
+        if(data.q in ["1", "2", "3", "4", "H", "OT"]){
+            var quarter = document.createElement("div");
+            quarter.innerHTML = this.translate(this.states[data.q]);
+            if(data.hasOwnProperty("k")){
+                quarter.classList.add("live");
+                date.appendChild(quarter);
+                var time = document.createElement("div");
+                time.classList.add("live");
+                time.innerHTML = data.k + ' ' + this.translate('TIME_LEFT');
+                date.appendChild(time);
+            } else {
+                date.appendChild(quarter);
+            }
+        } else if(data.q === "P"){
+            date.innerHTML = moment(
+                data.eid.slice(0, 4) + "-" +
+                data.eid.slice(4, 6) + "-" +
+                data.eid.slice(6, 8) + "T" +
+                ("0" + data.t).slice(-5) + ":00-05:00")
+                .add(12, 'h')
+                .format(this.config.format);
+        } else {
+            date.innerHTML = this.translate(this.states[data.q]);
+            date.classList.add("dimmed");
+        }
         row.appendChild(date);
 
         var homeTeam = document.createElement("td");
-        homeTeam.innerHTML = data.h;
+        homeTeam.classList.add("align-right");
+        this.appendBallPossession(data, true, homeTeam);
+        var homeTeamSpan = document.createElement("span");
+        homeTeamSpan.innerHTML = data.h;
+        homeTeam.appendChild(homeTeamSpan);
         row.appendChild(homeTeam);
 
         var homeLogo = document.createElement("td");
@@ -163,7 +199,11 @@ Module.register("MMM-NFL", {
         row.appendChild(awayLogo);
 
         var awayTeam = document.createElement("td");
-        awayTeam.innerHTML = data.v;
+        awayTeam.classList.add("align-left");
+        var awayTeamSpan = document.createElement("span");
+        awayTeamSpan.innerHTML = data.v;
+        awayTeam.appendChild(awayTeamSpan);
+        this.appendBallPossession(data, false, awayTeam);
         row.appendChild(awayTeam);
 
         if(this.config.network){
@@ -174,5 +214,22 @@ Module.register("MMM-NFL", {
         }
 
         return row;
+    },
+
+    appendBallPossession: function(data, homeTeam, appendTo){
+        var team = homeTeam ? data.h : data.v;
+        if(data.p === team){
+            var ballIcon = document.createElement("img");
+            ballIcon.src = this.file("icons/football.png");
+            if(homeTeam){
+                ballIcon.classList.add("ball-home");
+            } else {
+                ballIcon.classList.add("ball-away");
+            }
+            if(data.rz === "1"){
+                ballIcon.classList.add("redzone");
+            }
+            appendTo.appendChild(ballIcon);
+        }
     }
 });

@@ -1,3 +1,9 @@
+@-webkit-keyframes MMM-NFL-pulse {
+    0% {opacity: 1;}
+    50% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
 .MMM-NFL .table {
     border-spacing: 10px 0px;
     border-collapse: separate;
@@ -14,4 +20,22 @@
 
 .MMM-NFL .away {
     -webkit-transform: scaleX(-1);
+}
+
+.MMM-NFL .redzone {
+    -webkit-animation: MMM-NFL-pulse 2s infinite;
+}
+
+.MMM-NFL .live {
+    font-size: 10px;
+    line-height: 15px;
+    display: block;
+}
+
+.MMM-NFL .ball-home {
+    margin-right: 10px;
+}
+
+.MMM-NFL .ball-away {
+    margin-left: 10px;
 }
