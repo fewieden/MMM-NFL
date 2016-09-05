@@ -127,7 +127,7 @@ Module.register("MMM-NFL", {
     },
 
     appendDataRow: function (data, appendTo) {
-        if(!focus_on || focus_on.indexOf(data.h) !== -1 || focus_on.indexOf(data.v) !== -1) {
+        if(!this.config.focus_on || this.config.focus_on.indexOf(data.h) !== -1 || this.config.focus_on.indexOf(data.v) !== -1) {
             var row = document.createElement("tr");
             row.classList.add("row");
 
