@@ -3,7 +3,7 @@ National Football League Module for MagicMirror<sup>2</sup>
 
 ## Example
 
-![](.github/example.jpg)   ![](.github/example2.jpg)
+![](.github/example.jpg)   ![](.github/example2.jpg)   ![](.github/example_focus.jpg)
 
 ## Dependencies
   * An installation of [MagicMirror<sup>2</sup>](https://github.com/MichMich/MagicMirror)
@@ -32,6 +32,6 @@ National Football League Module for MagicMirror<sup>2</sup>
 | `colored` | `false` | Remove black/white filter of logos/helmets. |
 | `helmets` | `false` | Show helmets instead of logo. |
 | `network` | `true` | Display network/tv column. |
-| `focus_on` | `false` | Display only matches with teams of this array e.g. `['NYG', 'DAL']`. |
+| `focus_on` | `false` | Display only matches with teams of this array e.g. `['NYG', 'DAL', 'NE']`. |
 | `format` | `'ddd h:mm'` | In which format the date should be displayed. [All Options](http://momentjs.com/docs/#/displaying/format/) |
 | `reloadInterval` | `1800000` (30 mins) | How often should the data be fetched |
