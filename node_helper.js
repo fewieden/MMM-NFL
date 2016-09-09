@@ -83,8 +83,8 @@ module.exports = NodeHelper.create({
         var ended = ['F', 'FO', 'T'];
         for(var i = 0; i < this.scores.length; i++) {
             var temp = this.scores[i].$;
-            this.scores[i].$.starttime = moment().tz(
-                temp.eid.slice(0, 4) + "-" + temp.eid.slice(4, 6) + "-" + temp.eid.slice(6, 8) + "T" + ("0" + (12 + parseInt(temp.t.split(':')[0])) + temp.t.slice(-3)).slice(-5),
+            this.scores[i].$.starttime = moment.tz(
+                temp.eid.slice(0, 4) + "-" + temp.eid.slice(4, 6) + "-" + temp.eid.slice(6, 8) + " " + ("0" + (12 + parseInt(temp.t.split(':')[0])) + temp.t.slice(-3)).slice(-5),
                 "America/New_York"
             );
             if(this.scores[i].$.q === "P"){
