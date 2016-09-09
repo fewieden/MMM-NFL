@@ -7,6 +7,7 @@
 
 const request = require('request');
 const parser = require('xml2js').parseString;
+const moment = require('moment-timezone');
 const NodeHelper = require("node_helper");
 
 module.exports = NodeHelper.create({
@@ -82,14 +83,16 @@ module.exports = NodeHelper.create({
         var ended = ['F', 'FO', 'T'];
         for(var i = 0; i < this.scores.length; i++) {
             var temp = this.scores[i].$;
-            this.scores[i].$.starttime = Date.parse(temp.eid.slice(0, 4) + "-" + temp.eid.slice(4, 6) + "-" +
-                temp.eid.slice(6, 8) + "T" + ("0" + (12 + parseInt(temp.t.split(':')[0])) + temp.t.slice(-3)).slice(-5) + ":00-05:00");
+            this.scores[i].$.starttime = moment().tz(
+                temp.eid.slice(0, 4) + "-" + temp.eid.slice(4, 6) + "-" + temp.eid.slice(6, 8) + "T" + ("0" + (12 + parseInt(temp.t.split(':')[0])) + temp.t.slice(-3)).slice(-5),
+                "America/New_York"
+            );
             if(this.scores[i].$.q === "P"){
                 all_ended = false;
                 if(next === null){
                     next = this.scores[i].$;
                 }
-            } else if((in_game.indexOf(this.scores[i].$.q) !== -1 || this.scores[i].$.starttime > now) && this.live.matches.indexOf(this.scores[i].$.gsis) === -1){
+            } else if((in_game.indexOf(this.scores[i].$.q) !== -1 || Date.parse(this.scores[i].$.starttime) > now) && this.live.matches.indexOf(this.scores[i].$.gsis) === -1){
                 all_ended = false;
                 this.live.matches.push(this.scores[i].$.gsis);
                 this.live.state = true;

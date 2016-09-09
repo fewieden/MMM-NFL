@@ -18,6 +18,7 @@
   "homepage": "https://github.com/fewieden/MMM-NFL#readme",
   "dependencies": {
     "request": "^2.74.0",
-    "xml2js": "^0.4.17"
+    "xml2js": "^0.4.17",
+    "moment-timezone": "^0.5.5"
   }
 }
