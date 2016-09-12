@@ -151,13 +151,7 @@ Module.register("MMM-NFL", {
                     date.appendChild(quarter);
                 }
             } else if (data.q === "P") {
-                date.innerHTML = moment(
-                    data.eid.slice(0, 4) + "-" +
-                    data.eid.slice(4, 6) + "-" +
-                    data.eid.slice(6, 8) + "T" +
-                    ("0" + data.t).slice(-5) + ":00-05:00")
-                    .add(12, 'h')
-                    .format(this.config.format);
+                date.innerHTML = moment(data.starttime).format(this.config.format);
             } else {
                 date.innerHTML = this.translate(this.states[data.q]);
                 date.classList.add("dimmed");
