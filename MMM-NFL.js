@@ -61,12 +61,51 @@ Module.register("MMM-NFL", {
         moment.locale(config.language);
     },
 
+    notificationReceived: function (notification, payload, sender) {
+        if(notification === "ALL_MODULES_STARTED"){
+            this.sendNotification("REGISTER_VOICE_MODULE", {
+                mode: "FOOTBALL",
+                sentences: [
+                    "SHOW HELMETS",
+                    "SHOW LOGOS",
+                    "COLOR ON",
+                    "COLOR OFF",
+                    "NETWORK ON",
+                    "NETWORK OFF"
+                ]
+            });
+        } else if(notification === "VOICE_FOOTBALL" && sender.name === "MMM-voice"){
+            this.checkCommands(payload);
+        }
+    },
+
     socketNotificationReceived: function (notification, payload) {
         if (notification === "SCORES") {
             this.scores = payload.scores;
             this.details = payload.details;
             this.updateDom(1000);
         }
+    },
+
+    checkCommands: function(data){
+        if(/(HELMETS)/g.test(data)){
+            this.config.helmets = true;
+        } else if(/(LOGOS)/g.test(data)){
+            this.config.helmets = false;
+        } else if(/(COLOR)/g.test(data)){
+            if(/(ON)/g.test(data) || !this.config.colored && !/(OFF)/g.test(data)){
+                this.config.colored = true;
+            } else if(/(OFF)/g.test(data) || this.config.colored && !/(ON)/g.test(data)){
+                this.config.colored = false;
+            }
+        } else if(/(NETWORK)/g.test(data)){
+            if(/(ON)/g.test(data) || !this.config.network && !/(OFF)/g.test(data)){
+                this.config.network = true;
+            } else if(/(OFF)/g.test(data) || this.config.network && !/(ON)/g.test(data)){
+                this.config.network = false;
+            }
+        }
+        this.updateDom(300);
     },
 
     getDom: function () {
