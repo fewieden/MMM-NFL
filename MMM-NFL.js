@@ -40,6 +40,8 @@ Module.register("MMM-NFL", {
         reloadInterval: 30 * 60 * 1000       // every 30 minutes
     },
 
+    statistics: false,
+
     getTranslations: function () {
         return {
             en: "translations/en.json",
@@ -71,7 +73,14 @@ Module.register("MMM-NFL", {
                     "COLOR ON",
                     "COLOR OFF",
                     "NETWORK ON",
-                    "NETWORK OFF"
+                    "NETWORK OFF",
+                    "SHOW PASSING YARDS STATISTIC",
+                    "SHOW RUSHING YARDS STATISTIC",
+                    "SHOW RECEIVING YARDS STATISTIC",
+                    "SHOW TACKLES STATISTIC",
+                    "SHOW SACKS STATISTIC",
+                    "SHOW INTERCEPTIONS STATISTIC",
+                    "HIDE STATISTIC"
                 ]
             });
         } else if(notification === "VOICE_FOOTBALL" && sender.name === "MMM-voice"){
@@ -83,7 +92,10 @@ Module.register("MMM-NFL", {
         if (notification === "SCORES") {
             this.scores = payload.scores;
             this.details = payload.details;
-            this.updateDom(1000);
+            this.updateDom(300);
+        } else if(notification === "STATISTICS"){
+            this.statistics = payload;
+            this.updateDom(300);
         }
     },
 
@@ -103,6 +115,22 @@ Module.register("MMM-NFL", {
                 this.config.network = true;
             } else if(/(OFF)/g.test(data) || this.config.network && !/(ON)/g.test(data)){
                 this.config.network = false;
+            }
+        } else if(/(STATISTIC)/g.test(data)){
+            if(/(PASSING)/g.test(data)){
+                this.sendSocketNotification("GET_STATISTICS", "Passing Yards");
+            } else if(/(RUSHING)/g.test(data)){
+                this.sendSocketNotification("GET_STATISTICS", "Rushing Yards");
+            } else if(/(RECEIVING)/g.test(data)){
+                this.sendSocketNotification("GET_STATISTICS", "Receiving Yards");
+            } else if(/(TACKLES)/g.test(data)){
+                this.sendSocketNotification("GET_STATISTICS", "Tackles");
+            } else if(/(SACKS)/g.test(data)){
+                this.sendSocketNotification("GET_STATISTICS", "Sacks");
+            } else if(/(INTERCEPTIONS)/g.test(data)){
+                this.sendSocketNotification("GET_STATISTICS", "Interceptions");
+            } else if(/(HIDE)/g.test(data)){
+                this.statistics = false;
             }
         }
         this.updateDom(300);
@@ -131,6 +159,16 @@ Module.register("MMM-NFL", {
             }
 
             wrapper.appendChild(table);
+
+            if(this.statistics){
+                document.querySelector("body").classList.add("MMM-NFL-blur");
+                var statistic = document.createElement("div");
+                statistic.classList.add("statistic");
+                this.appendStatistics(statistic);
+                wrapper.appendChild(statistic);
+            } else {
+                document.querySelector("body").classList.remove("MMM-NFL-blur");
+            }
         }
 
         return wrapper;
@@ -272,5 +310,61 @@ Module.register("MMM-NFL", {
             }
             appendTo.appendChild(ballIcon);
         }
+    },
+
+    appendStatistics: function(appendTo){
+        var type = document.createElement("div");
+        type.classList.add("large");
+        type.innerHTML = this.statistics.type;
+        appendTo.appendChild(type);
+
+        var table = document.createElement("table");
+        table.classList.add("medium", "table");
+
+        var labelRow = document.createElement("tr");
+
+        var posLabel = document.createElement("th");
+        posLabel.innerHTML = "#";
+        labelRow.appendChild(posLabel);
+
+        var nameLabel = document.createElement("th");
+        nameLabel.innerHTML = this.translate("NAME");
+        nameLabel.classList.add("align-left");
+        labelRow.appendChild(nameLabel);
+
+        var teamLabel = document.createElement("th");
+        teamLabel.innerHTML = this.translate("TEAM");
+        labelRow.appendChild(teamLabel);
+
+        var unitLabel = document.createElement("th");
+        unitLabel.innerHTML = this.statistics.data.unit;
+        labelRow.appendChild(unitLabel);
+
+        table.appendChild(labelRow);
+
+        for (var i = 0; i < this.statistics.data.players.length; i++) {
+            var row = document.createElement("tr");
+            row.classList.add("row");
+
+            var position = document.createElement("td");
+            position.innerHTML = this.statistics.data.players[i].position;
+            row.appendChild(position);
+
+            var player = document.createElement("td");
+            player.innerHTML = this.statistics.data.players[i].player;
+            row.appendChild(player);
+
+            var team = document.createElement("td");
+            team.innerHTML = this.statistics.data.players[i].team;
+            row.appendChild(team);
+
+            var value = document.createElement("td");
+            value.innerHTML = this.statistics.data.players[i].value;
+            row.appendChild(value);
+
+            table.appendChild(row);
+        }
+
+        appendTo.appendChild(table);
     }
 });
