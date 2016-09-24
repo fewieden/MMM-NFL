@@ -326,7 +326,7 @@ Module.register("MMM-NFL", {
 
     appendStatistics: function(appendTo){
         var type = document.createElement("div");
-        type.classList.add("large");
+        type.classList.add("large", "align-left");
         type.innerHTML = this.statistics.type;
         appendTo.appendChild(type);
 
@@ -362,12 +362,20 @@ Module.register("MMM-NFL", {
             row.appendChild(position);
 
             var player = document.createElement("td");
+            player.classList.add("align-left");
             player.innerHTML = this.statistics.data.players[i].player;
             row.appendChild(player);
 
             var team = document.createElement("td");
-            team.classList.add("align-left");
-            team.innerHTML = this.statistics.data.players[i].team;
+            var teamName = document.createElement("span");
+            teamName.innerHTML = this.statistics.data.players[i].team;
+            team.appendChild(teamName);
+            var teamIcon = document.createElement("img");
+            teamIcon.src = this.file("icons/" + this.statistics.data.players[i].team + (this.config.helmets ? "_helmet" : "") + ".png");
+            if (!this.config.colored) {
+                teamIcon.classList.add("icon");
+            }
+            team.appendChild(teamIcon);
             row.appendChild(team);
 
             var value = document.createElement("td");
