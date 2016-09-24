@@ -117,7 +117,9 @@ Module.register("MMM-NFL", {
                 this.config.network = false;
             }
         } else if(/(STATISTIC)/g.test(data)){
-            if(/(PASSING)/g.test(data)){
+            if(/(HIDE)/g.test(data)){
+                this.statistics = false;
+            } else if(/(PASSING)/g.test(data)){
                 this.sendSocketNotification("GET_STATISTICS", "Passing Yards");
             } else if(/(RUSHING)/g.test(data)){
                 this.sendSocketNotification("GET_STATISTICS", "Rushing Yards");
@@ -129,8 +131,6 @@ Module.register("MMM-NFL", {
                 this.sendSocketNotification("GET_STATISTICS", "Sacks");
             } else if(/(INTERCEPTIONS)/g.test(data)){
                 this.sendSocketNotification("GET_STATISTICS", "Interceptions");
-            } else if(/(HIDE)/g.test(data)){
-                this.statistics = false;
             }
         }
         this.updateDom(300);
@@ -139,15 +139,16 @@ Module.register("MMM-NFL", {
     getDom: function () {
 
         var wrapper = document.createElement("div");
+        var scores = document.createElement("div");
         var header = document.createElement("header");
         header.innerHTML = "NFL " + this.modes[this.details.t] + " " + this.details.y;
-        wrapper.appendChild(header);
+        scores.appendChild(header);
 
         if (!this.scores) {
             var text = document.createElement("div");
             text.innerHTML = this.translate("LOADING");
             text.classList.add("dimmed", "light");
-            wrapper.appendChild(text);
+            scores.appendChild(text);
         } else {
             var table = document.createElement("table");
             table.classList.add("small", "table");
@@ -158,18 +159,29 @@ Module.register("MMM-NFL", {
                 this.appendDataRow(this.scores[i].$, table);
             }
 
-            wrapper.appendChild(table);
+            scores.appendChild(table);
+
+            var modules = document.querySelectorAll(".module");
+            for (var i = 0; i < modules.length; i++) {
+                if(!modules[i].classList.contains("MMM-NFL")){
+                    if(this.statistics){
+                        modules[i].classList.add("MMM-NFL-blur");
+                    } else {
+                        modules[i].classList.remove("MMM-NFL-blur");
+                    }
+                }
+            }
 
             if(this.statistics){
-                document.querySelector("body").classList.add("MMM-NFL-blur");
+                scores.classList.add("MMM-NFL-blur");
                 var statistic = document.createElement("div");
                 statistic.classList.add("statistic");
                 this.appendStatistics(statistic);
                 wrapper.appendChild(statistic);
-            } else {
-                document.querySelector("body").classList.remove("MMM-NFL-blur");
             }
         }
+
+        wrapper.appendChild(scores);
 
         return wrapper;
     },
@@ -329,7 +341,6 @@ Module.register("MMM-NFL", {
 
         var nameLabel = document.createElement("th");
         nameLabel.innerHTML = this.translate("NAME");
-        nameLabel.classList.add("align-left");
         labelRow.appendChild(nameLabel);
 
         var teamLabel = document.createElement("th");
@@ -355,6 +366,7 @@ Module.register("MMM-NFL", {
             row.appendChild(player);
 
             var team = document.createElement("td");
+            team.classList.add("align-left");
             team.innerHTML = this.statistics.data.players[i].team;
             row.appendChild(team);
 

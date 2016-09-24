@@ -1,3 +1,9 @@
+/* Magic Mirror
+ * Module: MMM-NFL
+ *
+ * By fewieden https://github.com/fewieden/MMM-NFL
+ * MIT Licensed.
+ */
 const jsdom = require("jsdom");
 
 module.exports = {
@@ -12,7 +18,7 @@ module.exports = {
 
     getStats: function(type, callback){
         var time = Date.now();
-        if(!this.statistics.timestamp || this.statistics.timestamp < time - this.CACHE_TIME || !this.statistics.data.hasOwnProperty(type)){
+        if(!this.statistics.timestamp || this.statistics.timestamp < time - this.CACHE_TIME || !this.statistics.data.hasOwnProperty(type.toUpperCase())){
             jsdom.env({
                 url: this.URL,
                 done: (err, window) => {
@@ -27,17 +33,17 @@ module.exports = {
                                 var types = teams[i].children;
                                 for(var n = 0; n < types.length; n++){
                                     var rows = types[n].querySelector("tbody").children;
-                                    statistics[rows[0].children[0].innerText] = {unit: rows[0].children[1].innerText, players: []};
-                                    var positionRegExp = /(.*?)\. .*,( [A-Z]+)?/ig;
-                                    var playerRegExp = /[1-5]\. (.*?),( [A-Z]+)?/ig;
-                                    var teamRegExp = /[1-5]\. .*,(.*?)$/ig;
-                                    for(var x = 1; x < rows.length - 1; x++){
-                                        statistics[rows[0].children[0].innerText].players.push({
-                                            position: positionRegExp.exec(rows[x].children[rows[x].children.length - 2])[1],
-                                            player: playerRegExp.exec(rows[x].children[rows[x].children.length - 2])[1],
-                                            team: teamRegExp.exec(rows[x].children[rows[x].children.length - 2])[1].trim(),
-                                            value: rows[x].children[rows[x].children.length - 1]
-                                        });
+                                    if(rows){
+                                        statistics[rows[0].children[0].textContent] = {unit: rows[0].children[1].textContent, players: []};
+                                        for(var x = 1; x < rows.length - 1; x++){
+                                            var text = rows[x].children[rows[x].children.length -2].textContent;
+                                            statistics[rows[0].children[0].textContent].players.push({
+                                                position: text[0],
+                                                player: text.slice(3, text.lastIndexOf(",")),
+                                                team: text.slice(text.lastIndexOf(",") + 2),
+                                                value: rows[x].children[rows[x].children.length - 1].textContent
+                                            });
+                                        }
                                     }
                                 }
                             }
@@ -49,8 +55,8 @@ module.exports = {
                                 data: statistics
                             };
 
-                            if(this.statistics.data.hasOwnProperty(type)){
-                                callback(null, {type: type, data: this.statistics.data[type]});
+                            if(this.statistics.data.hasOwnProperty(type.toUpperCase())){
+                                callback(null, {type: type, data: this.statistics.data[type.toUpperCase()]});
                             } else {
                                 callback("Statistics for " + type + " not found!", null);
                             }
@@ -61,7 +67,7 @@ module.exports = {
                 }
             });
         } else {
-            callback(null, this.statistics.data[type]);
+            callback(null, {type: type, data: this.statistics.data[type.toUpperCase()]});
         }
     }
 };
