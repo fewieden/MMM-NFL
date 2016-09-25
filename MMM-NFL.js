@@ -90,6 +90,10 @@ Module.register("MMM-NFL", {
             this.sendNotification("REGISTER_VOICE_MODULE", this.voice);
         } else if(notification === "VOICE_FOOTBALL" && sender.name === "MMM-voice"){
             this.checkCommands(payload);
+        } else if(notification === "VOICE_MODE_CHANGED" && sender.name === "MMM-voice" && payload.old === this.voice.mode){
+            this.help = false;
+            this.statistics = false;
+            this.updateDom(300);
         }
     },
 
