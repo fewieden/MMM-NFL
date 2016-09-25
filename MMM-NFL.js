@@ -388,6 +388,10 @@ Module.register("MMM-NFL", {
             player.innerHTML = this.statistics.data.players[i].player;
             row.appendChild(player);
 
+            if(this.config.focus_on && this.config.focus_on.indexOf(this.statistics.data.players[i].team) !== -1){
+                row.classList.add("bright");
+            }
+
             var teamName = document.createElement("td");
             teamName.innerHTML = this.statistics.data.players[i].team;
             row.appendChild(teamName);
