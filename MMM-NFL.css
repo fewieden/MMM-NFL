@@ -46,7 +46,12 @@
 
 .MMM-NFL .modal {
     position: fixed;
+    text-align: left;
     left: 50%;
     top: 50%;
     -webkit-transform: translate(-50%, -50%);
+}
+
+.MMM-NFL .modal ul {
+    margin: 0px;
 }

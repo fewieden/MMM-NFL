@@ -343,7 +343,7 @@ Module.register("MMM-NFL", {
 
     appendStatistics: function(appendTo){
         var type = document.createElement("div");
-        type.classList.add("large", "align-left");
+        type.classList.add("large");
         type.innerHTML = this.statistics.type;
         appendTo.appendChild(type);
 
@@ -408,8 +408,8 @@ Module.register("MMM-NFL", {
     },
 
     appendHelp: function(appendTo){
-        var title = document.createElement("div");
-        title.classList.add("large");
+        var title = document.createElement("h1");
+        title.classList.add("medium");
         title.innerHTML = this.name + " - " + this.translate("COMMAND_LIST");
         appendTo.appendChild(title);
 
