@@ -40,7 +40,7 @@ module.exports = {
                                             statistics[rows[0].children[0].textContent].players.push({
                                                 position: text[0],
                                                 player: text.slice(3, text.lastIndexOf(",")),
-                                                team: text.slice(text.lastIndexOf(",") + 2),
+                                                team: text.slice(text.lastIndexOf(",") + 2) === "WSH" ? "WAS" : text.slice(text.lastIndexOf(",") + 2),
                                                 value: rows[x].children[rows[x].children.length - 1].textContent
                                             });
                                         }
