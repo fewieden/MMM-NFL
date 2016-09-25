@@ -12,5 +12,7 @@
   "FINAL_OVERTIME": "Final Over Time",
   "TIE": "Tie",
   "UPCOMING": "Upcoming",
-  "TIME_LEFT": "left"
+  "TIME_LEFT": "left",
+  "PLAYER": "Player",
+  "TEAM": "Team"
 }

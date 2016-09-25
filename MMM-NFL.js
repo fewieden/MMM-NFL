@@ -339,9 +339,9 @@ Module.register("MMM-NFL", {
         posLabel.innerHTML = "#";
         labelRow.appendChild(posLabel);
 
-        var nameLabel = document.createElement("th");
-        nameLabel.innerHTML = this.translate("NAME");
-        labelRow.appendChild(nameLabel);
+        var playerLabel = document.createElement("th");
+        playerLabel.innerHTML = this.translate("PLAYER");
+        labelRow.appendChild(playerLabel);
 
         var teamLabel = document.createElement("th");
         teamLabel.innerHTML = this.translate("TEAM");

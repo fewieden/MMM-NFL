@@ -50,3 +50,7 @@
     top: 50%;
     -webkit-transform: translate(-50%, -50%);
 }
+
+.MMM-NFL .statistic img {
+    margin-left: 10px;
+}
