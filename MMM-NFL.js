@@ -344,6 +344,7 @@ Module.register("MMM-NFL", {
         labelRow.appendChild(playerLabel);
 
         var teamLabel = document.createElement("th");
+        teamLabel.setAttribute("colspan", 2);
         teamLabel.innerHTML = this.translate("TEAM");
         labelRow.appendChild(teamLabel);
 
@@ -366,10 +367,11 @@ Module.register("MMM-NFL", {
             player.innerHTML = this.statistics.data.players[i].player;
             row.appendChild(player);
 
-            var team = document.createElement("td");
-            var teamName = document.createElement("span");
+            var teamName = document.createElement("td");
             teamName.innerHTML = this.statistics.data.players[i].team;
-            team.appendChild(teamName);
+            row.appendChild(teamName);
+
+            var team = document.createElement("td");
             var teamIcon = document.createElement("img");
             teamIcon.src = this.file("icons/" + this.statistics.data.players[i].team + (this.config.helmets ? "_helmet" : "") + ".png");
             if (!this.config.colored) {
