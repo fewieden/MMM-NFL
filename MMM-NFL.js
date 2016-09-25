@@ -99,6 +99,7 @@ Module.register("MMM-NFL", {
             this.details = payload.details;
             this.updateDom(300);
         } else if(notification === "STATISTICS"){
+            this.help = false;
             this.statistics = payload;
             this.updateDom(300);
         }
@@ -107,6 +108,7 @@ Module.register("MMM-NFL", {
     checkCommands: function(data){
         if(/(HELP)/g.test(data)){
             if(/(OPEN)/g.test(data) || !this.help && !/(CLOSE)/g.test(data)){
+                this.statistics = false;
                 this.help = true;
             } else if(/(CLOSE)/g.test(data) || this.help && !/(OPEN)/g.test(data)){
                 this.help = false;
