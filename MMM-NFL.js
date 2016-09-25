@@ -41,6 +41,28 @@ Module.register("MMM-NFL", {
     },
 
     statistics: false,
+    help: false,
+
+    voice: {
+        mode: "FOOTBALL",
+        sentences: [
+            "OPEN HELP",
+            "CLOSE HELP",
+            "SHOW HELMETS",
+            "SHOW LOGOS",
+            "COLOR ON",
+            "COLOR OFF",
+            "NETWORK ON",
+            "NETWORK OFF",
+            "SHOW PASSING YARDS STATISTIC",
+            "SHOW RUSHING YARDS STATISTIC",
+            "SHOW RECEIVING YARDS STATISTIC",
+            "SHOW TACKLES STATISTIC",
+            "SHOW SACKS STATISTIC",
+            "SHOW INTERCEPTIONS STATISTIC",
+            "HIDE STATISTIC"
+        ]
+    },
 
     getTranslations: function () {
         return {
@@ -65,24 +87,7 @@ Module.register("MMM-NFL", {
 
     notificationReceived: function (notification, payload, sender) {
         if(notification === "ALL_MODULES_STARTED"){
-            this.sendNotification("REGISTER_VOICE_MODULE", {
-                mode: "FOOTBALL",
-                sentences: [
-                    "SHOW HELMETS",
-                    "SHOW LOGOS",
-                    "COLOR ON",
-                    "COLOR OFF",
-                    "NETWORK ON",
-                    "NETWORK OFF",
-                    "SHOW PASSING YARDS STATISTIC",
-                    "SHOW RUSHING YARDS STATISTIC",
-                    "SHOW RECEIVING YARDS STATISTIC",
-                    "SHOW TACKLES STATISTIC",
-                    "SHOW SACKS STATISTIC",
-                    "SHOW INTERCEPTIONS STATISTIC",
-                    "HIDE STATISTIC"
-                ]
-            });
+            this.sendNotification("REGISTER_VOICE_MODULE", this.voice);
         } else if(notification === "VOICE_FOOTBALL" && sender.name === "MMM-voice"){
             this.checkCommands(payload);
         }
@@ -100,7 +105,13 @@ Module.register("MMM-NFL", {
     },
 
     checkCommands: function(data){
-        if(/(HELMETS)/g.test(data)){
+        if(/(HELP)/g.test(data)){
+            if(/(OPEN)/g.test(data) || !this.help && !/(CLOSE)/g.test(data)){
+                this.help = true;
+            } else if(/(CLOSE)/g.test(data) || this.help && !/(OPEN)/g.test(data)){
+                this.help = false;
+            }
+        } else if(/(HELMETS)/g.test(data)){
             this.config.helmets = true;
         } else if(/(LOGOS)/g.test(data)){
             this.config.helmets = false;
@@ -164,7 +175,7 @@ Module.register("MMM-NFL", {
             var modules = document.querySelectorAll(".module");
             for (var i = 0; i < modules.length; i++) {
                 if(!modules[i].classList.contains("MMM-NFL")){
-                    if(this.statistics){
+                    if(this.statistics || this.help){
                         modules[i].classList.add("MMM-NFL-blur");
                     } else {
                         modules[i].classList.remove("MMM-NFL-blur");
@@ -172,12 +183,16 @@ Module.register("MMM-NFL", {
                 }
             }
 
-            if(this.statistics){
+            if(this.statistics || this.help){
                 scores.classList.add("MMM-NFL-blur");
-                var statistic = document.createElement("div");
-                statistic.classList.add("statistic");
-                this.appendStatistics(statistic);
-                wrapper.appendChild(statistic);
+                var modal = document.createElement("div");
+                modal.classList.add("modal");
+                if(this.statistics){
+                    this.appendStatistics(modal);
+                } else {
+                    this.appendHelp(modal);
+                }
+                wrapper.appendChild(modal);
             }
         }
 
@@ -388,5 +403,28 @@ Module.register("MMM-NFL", {
         }
 
         appendTo.appendChild(table);
+    },
+
+    appendHelp: function(appendTo){
+        var title = document.createElement("div");
+        title.classList.add("large");
+        title.innerHTML = this.name + " - " + this.translate("COMMAND_LIST");
+        appendTo.appendChild(title);
+
+        var mode = document.createElement("div");
+        mode.innerHTML = this.translate("MODE") + ": " + this.voice.mode;
+        appendTo.appendChild(mode);
+
+        var listLabel = document.createElement("div");
+        listLabel.innerHTML = this.translate("VOICE_COMMANDS") + ":";
+        appendTo.appendChild(listLabel);
+
+        var list = document.createElement("ul");
+        for(var i = 0; i < this.voice.sentences.length; i++){
+            var item = document.createElement("li");
+            item.innerHTML = this.voice.sentences[i];
+            list.appendChild(item);
+        }
+        appendTo.appendChild(list);
     }
 });

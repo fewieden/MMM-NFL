@@ -14,5 +14,8 @@
   "UPCOMING": "Bevorstehend",
   "TIME_LEFT": "übrig",
   "PLAYER": "Spieler",
-  "TEAM": "Mannschaft"
+  "TEAM": "Mannschaft",
+  "COMMAND_LIST": "Liste aller Sprachbefehle",
+  "MODE": "Modus",
+  "VOICE_COMMANDS": "Sprachbefehle"
 }

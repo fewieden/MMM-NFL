@@ -14,5 +14,8 @@
   "UPCOMING": "Upcoming",
   "TIME_LEFT": "left",
   "PLAYER": "Player",
-  "TEAM": "Team"
+  "TEAM": "Team",
+  "COMMAND_LIST": "List of all Voice Commands",
+  "MODE": "Mode",
+  "VOICE_COMMANDS": "Voice Commands"
 }
