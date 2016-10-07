@@ -111,27 +111,27 @@ Module.register("MMM-NFL", {
 
     checkCommands: function(data){
         if(/(HELP)/g.test(data)){
-            if(/(OPEN)/g.test(data) || !this.help && !/(CLOSE)/g.test(data)){
+            if(/(CLOSE)/g.test(data) || this.help && !/(OPEN)/g.test(data)){
+                this.help = false;
+            } else if(/(OPEN)/g.test(data) || !this.help && !/(CLOSE)/g.test(data)){
                 this.statistics = false;
                 this.help = true;
-            } else if(/(CLOSE)/g.test(data) || this.help && !/(OPEN)/g.test(data)){
-                this.help = false;
             }
         } else if(/(HELMETS)/g.test(data)){
             this.config.helmets = true;
         } else if(/(LOGOS)/g.test(data)){
             this.config.helmets = false;
         } else if(/(COLOR)/g.test(data)){
-            if(/(ON)/g.test(data) || !this.config.colored && !/(OFF)/g.test(data)){
-                this.config.colored = true;
-            } else if(/(OFF)/g.test(data) || this.config.colored && !/(ON)/g.test(data)){
+            if(/(OFF)/g.test(data) || this.config.colored && !/(ON)/g.test(data)){
                 this.config.colored = false;
+            } else if(/(ON)/g.test(data) || !this.config.colored && !/(OFF)/g.test(data)){
+                this.config.colored = true;
             }
         } else if(/(NETWORK)/g.test(data)){
-            if(/(ON)/g.test(data) || !this.config.network && !/(OFF)/g.test(data)){
-                this.config.network = true;
-            } else if(/(OFF)/g.test(data) || this.config.network && !/(ON)/g.test(data)){
+            if(/(OFF)/g.test(data) || this.config.network && !/(ON)/g.test(data)){
                 this.config.network = false;
+            } else if(/(ON)/g.test(data) || !this.config.network && !/(OFF)/g.test(data)){
+                this.config.network = true;
             }
         } else if(/(STATISTIC)/g.test(data)){
             if(/(HIDE)/g.test(data)){
