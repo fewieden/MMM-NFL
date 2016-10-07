@@ -34,7 +34,6 @@ Module.register("MMM-NFL", {
     defaults: {
         colored: false,
         helmets: false,
-        network: true,
         focus_on: false,
         format: "ddd h:mm",
         reloadInterval: 30 * 60 * 1000       // every 30 minutes
@@ -52,8 +51,6 @@ Module.register("MMM-NFL", {
             "SHOW LOGOS",
             "COLOR ON",
             "COLOR OFF",
-            "NETWORK ON",
-            "NETWORK OFF",
             "SHOW PASSING YARDS STATISTIC",
             "SHOW RUSHING YARDS STATISTIC",
             "SHOW RECEIVING YARDS STATISTIC",
@@ -126,12 +123,6 @@ Module.register("MMM-NFL", {
                 this.config.colored = false;
             } else if(/(ON)/g.test(data) || !this.config.colored && !/(OFF)/g.test(data)){
                 this.config.colored = true;
-            }
-        } else if(/(NETWORK)/g.test(data)){
-            if(/(OFF)/g.test(data) || this.config.network && !/(ON)/g.test(data)){
-                this.config.network = false;
-            } else if(/(ON)/g.test(data) || !this.config.network && !/(OFF)/g.test(data)){
-                this.config.network = true;
             }
         } else if(/(STATISTIC)/g.test(data)){
             if(/(HIDE)/g.test(data)){
@@ -230,14 +221,6 @@ Module.register("MMM-NFL", {
         awayLabel.setAttribute("colspan", 3);
         labelRow.appendChild(awayLabel);
 
-        if(this.config.network){
-            var tvLabel = document.createElement("th");
-            var tvIcon = document.createElement("i");
-            tvIcon.classList.add("fa", "fa-television", "dimmed");
-            tvLabel.appendChild(tvIcon);
-            labelRow.appendChild(tvLabel);
-        }
-
         return labelRow;
     },
 
@@ -316,13 +299,6 @@ Module.register("MMM-NFL", {
             awayTeam.appendChild(awayTeamSpan);
             this.appendBallPossession(data, false, awayTeam);
             row.appendChild(awayTeam);
-
-            if (this.config.network) {
-                var tv = document.createElement("td");
-                tv.classList.add("dimmed");
-                tv.innerHTML = data.hasOwnProperty("n") ? data.n : "X";
-                row.appendChild(tv);
-            }
 
             appendTo.appendChild(row);
         }

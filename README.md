@@ -32,7 +32,6 @@ National Football League Module for MagicMirror<sup>2</sup>
 | --- | --- | --- |
 | `colored` | `false` | Remove black/white filter of logos/helmets. |
 | `helmets` | `false` | Show helmets instead of logo. |
-| `network` | `true` | Display network/tv column. |
 | `focus_on` | `false` | Display only matches with teams of this array e.g. `['NYG', 'DAL', 'NE']`. |
 | `format` | `'ddd h:mm'` | In which format the date should be displayed. [All Options](http://momentjs.com/docs/#/displaying/format/) |
 | `reloadInterval` | `1800000` (30 mins) | How often should the data be fetched |
@@ -50,8 +49,6 @@ The voice control mode for this module is `FOOTBALL`
   * SHOW LOGOS -> Switch team helmets to logos. (Effect stays until your mirror restarts, for permanent change you have to edit the config)
   * COLOR ON -> Switch color for team logos/helmets on. (Effect stays until your mirror restarts, for permanent change you have to edit the config)
   * COLOR OFF -> Switch color for team logos/helmets off. (Effect stays until your mirror restarts, for permanent change you have to edit the config)
-  * NETWORK ON -> Shows network information for US television. (Effect stays until your mirror restarts, for permanent change you have to edit the config)
-  * NETWORK OFF -> Hide network information. (Effect stays until your mirror restarts, for permanent change you have to edit the config)
   * SHOW PASSING YARDS STATISTIC -> Shows statistic of Top 5 passing players.
   * SHOW RUSHING YARDS STATISTIC -> Shows statistic of Top 5 rushing players.
   * SHOW RECEIVING YARDS STATISTIC -> Shows statistic of Top 5 receiving players.
