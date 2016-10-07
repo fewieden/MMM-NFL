@@ -12,5 +12,10 @@
   "FINAL_OVERTIME": "Final Over Time",
   "TIE": "Tie",
   "UPCOMING": "Upcoming",
-  "TIME_LEFT": "left"
+  "TIME_LEFT": "left",
+  "PLAYER": "Player",
+  "TEAM": "Team",
+  "COMMAND_LIST": "List of all Voice Commands",
+  "MODE": "Mode",
+  "VOICE_COMMANDS": "Voice Commands"
 }

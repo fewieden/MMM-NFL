@@ -40,6 +40,30 @@ Module.register("MMM-NFL", {
         reloadInterval: 30 * 60 * 1000       // every 30 minutes
     },
 
+    statistics: false,
+    help: false,
+
+    voice: {
+        mode: "FOOTBALL",
+        sentences: [
+            "OPEN HELP",
+            "CLOSE HELP",
+            "SHOW HELMETS",
+            "SHOW LOGOS",
+            "COLOR ON",
+            "COLOR OFF",
+            "NETWORK ON",
+            "NETWORK OFF",
+            "SHOW PASSING YARDS STATISTIC",
+            "SHOW RUSHING YARDS STATISTIC",
+            "SHOW RECEIVING YARDS STATISTIC",
+            "SHOW TACKLES STATISTIC",
+            "SHOW SACKS STATISTIC",
+            "SHOW INTERCEPTIONS STATISTIC",
+            "HIDE STATISTIC"
+        ]
+    },
+
     getTranslations: function () {
         return {
             en: "translations/en.json",
@@ -61,26 +85,87 @@ Module.register("MMM-NFL", {
         moment.locale(config.language);
     },
 
+    notificationReceived: function (notification, payload, sender) {
+        if(notification === "ALL_MODULES_STARTED"){
+            this.sendNotification("REGISTER_VOICE_MODULE", this.voice);
+        } else if(notification === "VOICE_FOOTBALL" && sender.name === "MMM-voice"){
+            this.checkCommands(payload);
+        } else if(notification === "VOICE_MODE_CHANGED" && sender.name === "MMM-voice" && payload.old === this.voice.mode){
+            this.help = false;
+            this.statistics = false;
+            this.updateDom(300);
+        }
+    },
+
     socketNotificationReceived: function (notification, payload) {
         if (notification === "SCORES") {
             this.scores = payload.scores;
             this.details = payload.details;
-            this.updateDom(1000);
+            this.updateDom(300);
+        } else if(notification === "STATISTICS"){
+            this.help = false;
+            this.statistics = payload;
+            this.updateDom(300);
         }
+    },
+
+    checkCommands: function(data){
+        if(/(HELP)/g.test(data)){
+            if(/(CLOSE)/g.test(data) || this.help && !/(OPEN)/g.test(data)){
+                this.help = false;
+            } else if(/(OPEN)/g.test(data) || !this.help && !/(CLOSE)/g.test(data)){
+                this.statistics = false;
+                this.help = true;
+            }
+        } else if(/(HELMETS)/g.test(data)){
+            this.config.helmets = true;
+        } else if(/(LOGOS)/g.test(data)){
+            this.config.helmets = false;
+        } else if(/(COLOR)/g.test(data)){
+            if(/(OFF)/g.test(data) || this.config.colored && !/(ON)/g.test(data)){
+                this.config.colored = false;
+            } else if(/(ON)/g.test(data) || !this.config.colored && !/(OFF)/g.test(data)){
+                this.config.colored = true;
+            }
+        } else if(/(NETWORK)/g.test(data)){
+            if(/(OFF)/g.test(data) || this.config.network && !/(ON)/g.test(data)){
+                this.config.network = false;
+            } else if(/(ON)/g.test(data) || !this.config.network && !/(OFF)/g.test(data)){
+                this.config.network = true;
+            }
+        } else if(/(STATISTIC)/g.test(data)){
+            if(/(HIDE)/g.test(data)){
+                this.statistics = false;
+            } else if(/(PASSING)/g.test(data)){
+                this.sendSocketNotification("GET_STATISTICS", "Passing Yards");
+            } else if(/(RUSHING)/g.test(data)){
+                this.sendSocketNotification("GET_STATISTICS", "Rushing Yards");
+            } else if(/(RECEIVING)/g.test(data)){
+                this.sendSocketNotification("GET_STATISTICS", "Receiving Yards");
+            } else if(/(TACKLES)/g.test(data)){
+                this.sendSocketNotification("GET_STATISTICS", "Tackles");
+            } else if(/(SACKS)/g.test(data)){
+                this.sendSocketNotification("GET_STATISTICS", "Sacks");
+            } else if(/(INTERCEPTIONS)/g.test(data)){
+                this.sendSocketNotification("GET_STATISTICS", "Interceptions");
+            }
+        }
+        this.updateDom(300);
     },
 
     getDom: function () {
 
         var wrapper = document.createElement("div");
+        var scores = document.createElement("div");
         var header = document.createElement("header");
         header.innerHTML = "NFL " + this.modes[this.details.t] + " " + this.details.y;
-        wrapper.appendChild(header);
+        scores.appendChild(header);
 
         if (!this.scores) {
             var text = document.createElement("div");
             text.innerHTML = this.translate("LOADING");
             text.classList.add("dimmed", "light");
-            wrapper.appendChild(text);
+            scores.appendChild(text);
         } else {
             var table = document.createElement("table");
             table.classList.add("small", "table");
@@ -91,8 +176,33 @@ Module.register("MMM-NFL", {
                 this.appendDataRow(this.scores[i].$, table);
             }
 
-            wrapper.appendChild(table);
+            scores.appendChild(table);
+
+            var modules = document.querySelectorAll(".module");
+            for (var i = 0; i < modules.length; i++) {
+                if(!modules[i].classList.contains("MMM-NFL")){
+                    if(this.statistics || this.help){
+                        modules[i].classList.add("MMM-NFL-blur");
+                    } else {
+                        modules[i].classList.remove("MMM-NFL-blur");
+                    }
+                }
+            }
+
+            if(this.statistics || this.help){
+                scores.classList.add("MMM-NFL-blur");
+                var modal = document.createElement("div");
+                modal.classList.add("modal");
+                if(this.statistics){
+                    this.appendStatistics(modal);
+                } else {
+                    this.appendHelp(modal);
+                }
+                wrapper.appendChild(modal);
+            }
         }
+
+        wrapper.appendChild(scores);
 
         return wrapper;
     },
@@ -233,5 +343,98 @@ Module.register("MMM-NFL", {
             }
             appendTo.appendChild(ballIcon);
         }
+    },
+
+    appendStatistics: function(appendTo){
+        var type = document.createElement("div");
+        type.classList.add("large");
+        type.innerHTML = this.statistics.type;
+        appendTo.appendChild(type);
+
+        var table = document.createElement("table");
+        table.classList.add("medium", "table");
+
+        var labelRow = document.createElement("tr");
+
+        var posLabel = document.createElement("th");
+        posLabel.innerHTML = "#";
+        labelRow.appendChild(posLabel);
+
+        var playerLabel = document.createElement("th");
+        playerLabel.innerHTML = this.translate("PLAYER");
+        labelRow.appendChild(playerLabel);
+
+        var teamLabel = document.createElement("th");
+        teamLabel.setAttribute("colspan", 2);
+        teamLabel.innerHTML = this.translate("TEAM");
+        labelRow.appendChild(teamLabel);
+
+        var unitLabel = document.createElement("th");
+        unitLabel.innerHTML = this.statistics.data.unit;
+        labelRow.appendChild(unitLabel);
+
+        table.appendChild(labelRow);
+
+        for (var i = 0; i < this.statistics.data.players.length; i++) {
+            var row = document.createElement("tr");
+            row.classList.add("row");
+
+            var position = document.createElement("td");
+            position.innerHTML = this.statistics.data.players[i].position;
+            row.appendChild(position);
+
+            var player = document.createElement("td");
+            player.classList.add("align-left");
+            player.innerHTML = this.statistics.data.players[i].player;
+            row.appendChild(player);
+
+            if(this.config.focus_on && this.config.focus_on.indexOf(this.statistics.data.players[i].team) !== -1){
+                row.classList.add("bright");
+            }
+
+            var teamName = document.createElement("td");
+            teamName.innerHTML = this.statistics.data.players[i].team;
+            row.appendChild(teamName);
+
+            var team = document.createElement("td");
+            var teamIcon = document.createElement("img");
+            teamIcon.src = this.file("icons/" + this.statistics.data.players[i].team + (this.config.helmets ? "_helmet" : "") + ".png");
+            if (!this.config.colored) {
+                teamIcon.classList.add("icon");
+            }
+            team.appendChild(teamIcon);
+            row.appendChild(team);
+
+            var value = document.createElement("td");
+            value.innerHTML = this.statistics.data.players[i].value;
+            row.appendChild(value);
+
+            table.appendChild(row);
+        }
+
+        appendTo.appendChild(table);
+    },
+
+    appendHelp: function(appendTo){
+        var title = document.createElement("h1");
+        title.classList.add("medium");
+        title.innerHTML = this.name + " - " + this.translate("COMMAND_LIST");
+        appendTo.appendChild(title);
+
+        var mode = document.createElement("div");
+        mode.innerHTML = this.translate("MODE") + ": " + this.voice.mode;
+        appendTo.appendChild(mode);
+
+        var listLabel = document.createElement("div");
+        listLabel.innerHTML = this.translate("VOICE_COMMANDS") + ":";
+        appendTo.appendChild(listLabel);
+
+        var list = document.createElement("ul");
+        for(var i = 0; i < this.voice.sentences.length; i++){
+            var item = document.createElement("li");
+            item.innerHTML = this.voice.sentences[i];
+            list.appendChild(item);
+        }
+        appendTo.appendChild(list);
     }
 });

@@ -12,5 +12,10 @@
   "FINAL_OVERTIME": "Verlängerung beendet",
   "TIE": "Unentschieden",
   "UPCOMING": "Bevorstehend",
-  "TIME_LEFT": "übrig"
+  "TIME_LEFT": "übrig",
+  "PLAYER": "Spieler",
+  "TEAM": "Mannschaft",
+  "COMMAND_LIST": "Liste aller Sprachbefehle",
+  "MODE": "Modus",
+  "VOICE_COMMANDS": "Sprachbefehle"
 }
