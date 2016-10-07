@@ -11,6 +11,8 @@ National Football League Module for MagicMirror<sup>2</sup>
   * npm
   * [request](https://www.npmjs.com/package/request)
   * [xml2js](https://www.npmjs.com/package/xml2js)
+  * [jsdom](https://www.npmjs.com/package/jsdom)
+  * [moment-timezone](https://www.npmjs.com/package/moment-timezone)
 
 ## Installation
  1. Clone this repo into `~/MagicMirror/modules` directory.
