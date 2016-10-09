@@ -22,7 +22,7 @@ Module.register("MMM-NFL", {
         "1": "1ST_QUARTER",
         "2": "2ND_QUARTER",
         "3": "3RD_QUARTER",
-        "4": "4th_QUARTER",
+        "4": "4TH_QUARTER",
         "H": "HALF_TIME",
         "OT": "OVER_TIME",
         "F": "FINAL",
