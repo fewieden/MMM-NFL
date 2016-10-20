@@ -3,7 +3,7 @@ National Football League Module for MagicMirror<sup>2</sup>
 
 ## Example
 
-![](.github/example.jpg)   ![](.github/example2.jpg)   ![](.github/example_focus.jpg)   ![](.github/example_statistic.jpg)   ![](.github/example_help.jpg)
+![](.github/example.jpg)   ![](.github/example2.jpg)   ![](.github/example_focus.jpg)   ![](.github/example_statistic.jpg)   ![](.github/example_help.jpg)   ![](.github/example_bye_week.png)
 
 ## Dependencies
   * An installation of [MagicMirror<sup>2</sup>](https://github.com/MichMich/MagicMirror)

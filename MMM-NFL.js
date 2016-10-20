@@ -167,6 +167,21 @@ Module.register("MMM-NFL", {
                 this.appendDataRow(this.scores[i].$, table);
             }
 
+            if(Array.isArray(this.config.focus_on)){
+                for(var i = 0; i < this.config.focus_on.length; i++){
+                    var hasMatch = false;
+                    for(var n = 0; n < this.scores.length; n++) {
+                        if(this.config.focus_on[i] === this.scores[n].$.h || this.config.focus_on[i] === this.scores[n].$.v){
+                            hasMatch = true;
+                            break;
+                        }
+                    }
+                    if(!hasMatch){
+                        this.appendByeWeek(this.config.focus_on[i], table);
+                    }
+                }
+            }
+
             scores.appendChild(table);
 
             var modules = document.querySelectorAll(".module");
@@ -319,6 +334,36 @@ Module.register("MMM-NFL", {
             }
             appendTo.appendChild(ballIcon);
         }
+    },
+
+    appendByeWeek: function(teamName, appendTo){
+        var row = document.createElement("tr");
+        row.classList.add("row");
+
+        var date = document.createElement("td");
+        date.innerHTML = this.translate("WEEK") + " " + this.details.w;
+        row.appendChild(date);
+
+        var team = document.createElement("td");
+        team.innerHTML = teamName;
+        row.appendChild(team);
+
+        var logo = document.createElement("td");
+        var icon = document.createElement("img");
+        icon.src = this.file("icons/" + teamName + (this.config.helmets ? "_helmet" : "") + ".png");
+        if (!this.config.colored) {
+            icon.classList.add("icon");
+        }
+        logo.appendChild(icon);
+        row.appendChild(logo);
+
+        var byeWeek = document.createElement("td");
+        byeWeek.setAttribute("colspan", 5);
+        byeWeek.classList.add("align-left");
+        byeWeek.innerHTML = this.translate("BYE_WEEK");
+        row.appendChild(byeWeek);
+
+        appendTo.appendChild(row);
     },
 
     appendStatistics: function(appendTo){
