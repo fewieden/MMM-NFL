@@ -118,6 +118,14 @@ module.exports = NodeHelper.create({
             }
         }
 
+        for(var i = this.scores.length - 2; i >= 0; i--){
+            var previous = this.scores[i].$.starttime;
+            var match = this.scores[i + 1].$.starttime;
+            if(previous.diff(match) > 0){
+                previous.subtract(12, 'hours');
+            }
+        }
+
         if(all_ended === true){
             this.nextMatch = null;
         }
