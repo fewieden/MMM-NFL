@@ -80,7 +80,7 @@ module.exports = NodeHelper.create({
 
     setMode: function(){
         var current_date = new Date();
-        if(this.mode === "regular" && this.details.w >= 17 && (current_date.getMonth() < 1 || current_date.getMonth() > 10)){
+        if(this.mode === "regular" && this.details.w > 17 && (current_date.getMonth() < 1 || current_date.getMonth() > 10)){
             this.mode = "post";
             this.getData();
             return;
