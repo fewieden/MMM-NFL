@@ -79,17 +79,6 @@ module.exports = NodeHelper.create({
     },
 
     setMode: function(){
-        var current_date = new Date();
-        if(this.mode === "regular" && this.details.w > 17 && (current_date.getMonth() < 1 || current_date.getMonth() > 10)){
-            this.mode = "post";
-            this.getData();
-            return;
-        } else if(this.mode === "post" && current_date.getMonth() >= 5){
-            this.mode = "regular";
-            this.getData();
-            return;
-        }
-
         var all_ended = true;
         var next = null;
         var now = Date.now();
@@ -116,6 +105,17 @@ module.exports = NodeHelper.create({
                     this.live.state = false;
                 }
             }
+        }
+
+        var current_date = new Date();
+        if(this.mode === "regular" && this.details.w >= 17 && (current_date.getMonth() < 1 || current_date.getMonth() > 10) && all_ended){
+            this.mode = "post";
+            this.getData();
+            return;
+        } else if(this.mode === "post" && current_date.getMonth() >= 5){
+            this.mode = "regular";
+            this.getData();
+            return;
         }
 
         for(var i = this.scores.length - 2; i >= 0; i--){
