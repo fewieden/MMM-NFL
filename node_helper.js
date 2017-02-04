@@ -108,7 +108,7 @@ module.exports = NodeHelper.create({
         }
 
         var current_date = new Date();
-        if(this.mode === "regular" && this.details.w >= 17 && (current_date.getMonth() < 1 || current_date.getMonth() > 10) && all_ended){
+        if(this.mode === "regular" && this.details.w >= 17 && (current_date.getMonth() < 5 || current_date.getMonth() > 10) && all_ended){
             this.mode = "post";
             this.getData();
             return;
