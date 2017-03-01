@@ -17,6 +17,7 @@ National Football League Module for MagicMirror<sup>2</sup>
 * [moment-timezone](https://www.npmjs.com/package/moment-timezone)
 
 ## Installation
+
 1. Clone this repo into `~/MagicMirror/modules` directory.
 1. Configure your `~/MagicMirror/config/config.js`:
 
@@ -29,6 +30,7 @@ National Football League Module for MagicMirror<sup>2</sup>
         }
     }
     ```
+
 1. Run command `npm install --productive` in `~/MagicMirror/modules/MMM-NFL` directory.
 
 ## Config Options

@@ -278,12 +278,7 @@ Module.register('MMM-NFL', {
             row.appendChild(homeTeam);
 
             const homeLogo = document.createElement('td');
-            const homeIcon = document.createElement('img');
-            homeIcon.src = this.file(`icons/${data.h}${this.config.helmets ? '_helmet' : ''}.png`);
-            if (!this.config.colored) {
-                homeIcon.classList.add('icon');
-            }
-            homeLogo.appendChild(homeIcon);
+            homeLogo.appendChild(this.createIcon(data.h));
             row.appendChild(homeLogo);
 
             const homeScore = document.createElement('td');
@@ -299,15 +294,7 @@ Module.register('MMM-NFL', {
             row.appendChild(awayScore);
 
             const awayLogo = document.createElement('td');
-            const awayIcon = document.createElement('img');
-            awayIcon.src = this.file(`icons/${data.v}${this.config.helmets ? '_helmet' : ''}.png`);
-            if (!this.config.colored) {
-                awayIcon.classList.add('icon');
-            }
-            if (this.config.helmets) {
-                awayIcon.classList.add('away');
-            }
-            awayLogo.appendChild(awayIcon);
+            awayLogo.appendChild(this.createIcon(data.v, true));
             row.appendChild(awayLogo);
 
             const awayTeam = document.createElement('td');
@@ -352,12 +339,7 @@ Module.register('MMM-NFL', {
         row.appendChild(team);
 
         const logo = document.createElement('td');
-        const icon = document.createElement('img');
-        icon.src = this.file(`icons/${teamName}${this.config.helmets ? '_helmet' : ''}.png`);
-        if (!this.config.colored) {
-            icon.classList.add('icon');
-        }
-        logo.appendChild(icon);
+        logo.appendChild(this.createIcon(teamName));
         row.appendChild(logo);
 
         const byeWeek = document.createElement('td');
@@ -421,12 +403,7 @@ Module.register('MMM-NFL', {
             row.appendChild(teamName);
 
             const team = document.createElement('td');
-            const teamIcon = document.createElement('img');
-            teamIcon.src = this.file(`icons/${this.statistics.data.players[i].team}${this.config.helmets ? '_helmet' : ''}.png`);
-            if (!this.config.colored) {
-                teamIcon.classList.add('icon');
-            }
-            team.appendChild(teamIcon);
+            team.appendChild(this.createIcon(this.statistics.data.players[i].team));
             row.appendChild(team);
 
             const value = document.createElement('td');
@@ -460,5 +437,17 @@ Module.register('MMM-NFL', {
             list.appendChild(item);
         }
         appendTo.appendChild(list);
+    },
+
+    createIcon(team, flip = false) {
+        const teamIcon = document.createElement('img');
+        teamIcon.src = this.file(`icons/${team}${this.config.helmets ? '_helmet' : ''}.png`);
+        if (!this.config.colored) {
+            teamIcon.classList.add('icon');
+        }
+        if (flip && this.config.helmets) {
+            teamIcon.classList.add('away');
+        }
+        return teamIcon;
     }
 });
