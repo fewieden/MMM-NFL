@@ -1,11 +1,11 @@
 @-webkit-keyframes MMM-NFL-pulse {
-    0% {opacity: 1;}
-    50% {opacity: 0;}
-    100% {opacity: 1;}
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
 .MMM-NFL .table {
-    border-spacing: 10px 0px;
+    border-spacing: 10px 0;
     border-collapse: separate;
     text-align: center;
 }
@@ -20,6 +20,9 @@
 
 .MMM-NFL .away {
     -webkit-transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
 }
 
 .MMM-NFL .redzone {
@@ -42,6 +45,7 @@
 
 .MMM-NFL-blur {
     -webkit-filter: blur(2px) brightness(50%);
+    filter: blur(2px) brightness(50%);
 }
 
 .MMM-NFL .modal {
@@ -50,8 +54,11 @@
     left: 50%;
     top: 50%;
     -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 .MMM-NFL .modal ul {
-    margin: 0px;
+    margin: 0;
 }
