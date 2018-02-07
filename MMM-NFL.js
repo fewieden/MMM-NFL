@@ -150,7 +150,7 @@ Module.register('MMM-NFL', {
         const wrapper = document.createElement('div');
         const scores = document.createElement('div');
         const header = document.createElement('header');
-        header.innerHTML = `NFL ${this.modes[this.details.t]} ${this.details.y}`;
+        header.innerHTML = `NFL ${this.modes[this.details.t] || this.details.t} ${this.details.y}`;
         scores.appendChild(header);
 
         if (!this.scores) {
