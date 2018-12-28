@@ -33,6 +33,10 @@ Module.register('MMM-NFL', {
         P: 'UPCOMING'
     },
 
+    renamedTeams: {
+        LA: 'LAR'
+    },
+
     defaults: {
         colored: false,
         helmets: false,
@@ -274,7 +278,7 @@ Module.register('MMM-NFL', {
             firstTeam.classList.add('align-right');
             this.appendBallPossession(data, true, firstTeam);
             const firstTeamSpan = document.createElement('span');
-            firstTeamSpan.innerHTML = data[this.config.reverseTeams ? 'v' : 'h'];
+            firstTeamSpan.innerHTML = this.getTeamName(data[this.config.reverseTeams ? 'v' : 'h']);
             firstTeam.appendChild(firstTeamSpan);
             row.appendChild(firstTeam);
 
@@ -301,13 +305,21 @@ Module.register('MMM-NFL', {
             const secondTeam = document.createElement('td');
             secondTeam.classList.add('align-left');
             const secondTeamSpan = document.createElement('span');
-            secondTeamSpan.innerHTML = data[this.config.reverseTeams ? 'h' : 'v'];
+            secondTeamSpan.innerHTML = this.getTeamName(data[this.config.reverseTeams ? 'h' : 'v']);
             secondTeam.appendChild(secondTeamSpan);
             this.appendBallPossession(data, false, secondTeam);
             row.appendChild(secondTeam);
 
             appendTo.appendChild(row);
         }
+    },
+
+    getTeamName(name) {
+        if (this.renamedTeams.hasOwnProperty(name)) {
+            return this.renamedTeams[name];
+        }
+
+        return name;
     },
 
     appendBallPossession(data, homeTeam, appendTo) {
