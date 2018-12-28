@@ -315,7 +315,7 @@ Module.register('MMM-NFL', {
     },
 
     getTeamName(name) {
-        if (this.renamedTeams.hasOwnProperty(name)) {
+        if (Object.prototype.hasOwnProperty.call(this.renamedTeams, name)) {
             return this.renamedTeams[name];
         }
 
