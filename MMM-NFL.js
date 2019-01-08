@@ -156,7 +156,8 @@ Module.register('MMM-NFL', {
         const wrapper = document.createElement('div');
         const scores = document.createElement('div');
         const header = document.createElement('header');
-        header.innerHTML = `NFL ${this.modes[this.details.t] || this.details.t} ${this.details.y} Week ${this.details.w}`;
+        header.innerHTML = `NFL ${this.modes[this.details.t] || this.details.t} ${this.details.y}
+            Week ${this.details.w}`;
         scores.appendChild(header);
 
         if (!this.scores) {
@@ -324,16 +325,18 @@ Module.register('MMM-NFL', {
     },
 
     appendBallPossession(data, firstTeam, appendTo) {
-        const team = firstTeam ? data.h : data.v;
-            if (data.p === team) {
-                const ballIcon = document.createElement('img');
-                ballIcon.src = this.file('icons/football.png');
-                if (firstTeam) { ballIcon.classList.add('ball-home');
-                } else {
-                    ballIcon.classList.add('ball-away');
-                } if (data.rz === '1') {
-                    ballIcon.classList.add('redzone');
-            } appendTo.appendChild(ballIcon);
+      const team = firstTeam ? data.h : data.v;
+        if (data.p === team) {
+            const ballIcon = document.createElement('img');
+            ballIcon.src = this.file('icons/football.png');
+            if (firstTeam) { 
+                ballIcon.classList.add('ball-home');
+            } else {
+                ballIcon.classList.add('ball-away');
+            } if (data.rz === '1') {
+                ballIcon.classList.add('redzone');
+            }
+            appendTo.appendChild(ballIcon);
         }
     },
 
