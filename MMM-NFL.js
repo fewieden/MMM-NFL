@@ -12,12 +12,13 @@ Module.register('MMM-NFL', {
     modes: {
         P: 'Pre-Season',
         R: 'Regular-Season',
-        POST: 'Post-Season'
+        POST: 'Post-Season',
+        PRO: 'Pro-Bowl'
     },
 
     details: {
         y: (new Date()).getFullYear(),
-        t: 'P'
+        t: 'R'
     },
 
     states: {
@@ -155,7 +156,8 @@ Module.register('MMM-NFL', {
         const wrapper = document.createElement('div');
         const scores = document.createElement('div');
         const header = document.createElement('header');
-        header.innerHTML = `NFL ${this.modes[this.details.t] || this.details.t} ${this.details.y}`;
+        header.innerHTML = `NFL ${this.modes[this.details.t] || this.details.t} ${this.details.y}
+            Week ${this.details.w}`;
         scores.appendChild(header);
 
         if (!this.scores) {
@@ -276,7 +278,7 @@ Module.register('MMM-NFL', {
 
             const firstTeam = document.createElement('td');
             firstTeam.classList.add('align-right');
-            this.appendBallPossession(data, true, firstTeam);
+            this.appendBallPossession(data, false, firstTeam);
             const firstTeamSpan = document.createElement('span');
             firstTeamSpan.innerHTML = this.getTeamName(data[this.config.reverseTeams ? 'v' : 'h']);
             firstTeam.appendChild(firstTeamSpan);
@@ -307,7 +309,7 @@ Module.register('MMM-NFL', {
             const secondTeamSpan = document.createElement('span');
             secondTeamSpan.innerHTML = this.getTeamName(data[this.config.reverseTeams ? 'h' : 'v']);
             secondTeam.appendChild(secondTeamSpan);
-            this.appendBallPossession(data, false, secondTeam);
+            this.appendBallPossession(data, true, secondTeam);
             row.appendChild(secondTeam);
 
             appendTo.appendChild(row);
@@ -322,17 +324,16 @@ Module.register('MMM-NFL', {
         return name;
     },
 
-    appendBallPossession(data, homeTeam, appendTo) {
-        const team = homeTeam ? data.h : data.v;
+    appendBallPossession(data, firstTeam, appendTo) {
+        const team = firstTeam ? data.h : data.v;
         if (data.p === team) {
             const ballIcon = document.createElement('img');
             ballIcon.src = this.file('icons/football.png');
-            if (homeTeam) {
+            if (firstTeam) {
                 ballIcon.classList.add('ball-home');
             } else {
                 ballIcon.classList.add('ball-away');
-            }
-            if (data.rz === '1') {
+            } if (data.rz === '1') {
                 ballIcon.classList.add('redzone');
             }
             appendTo.appendChild(ballIcon);
