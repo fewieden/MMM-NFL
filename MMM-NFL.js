@@ -160,7 +160,7 @@ Module.register('MMM-NFL', {
             scores.appendChild(text);
         } else {
             const table = document.createElement('table');
-            table.classList.add('small', 'table');
+            table.classList.add('medium', 'table');
 
             table.appendChild(this.createLabelRow());
 
