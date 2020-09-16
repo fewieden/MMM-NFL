@@ -31,7 +31,7 @@ National Football League Module for MagicMirror<sup>2</sup>
     }
     ```
 
-1. Run command `npm install --productive` in `~/MagicMirror/modules/MMM-NFL` directory.
+1. Run command `npm install --production` in `~/MagicMirror/modules/MMM-NFL` directory.
 
 ## Config Options
 
@@ -42,7 +42,8 @@ National Football League Module for MagicMirror<sup>2</sup>
 | `focus_on` | `false` | Display only matches with teams of this array e.g. `['NYG', 'DAL', 'NE']`. |
 | `format` | `'ddd h:mm'` | In which format the date should be displayed. [All Options](http://momentjs.com/docs/#/displaying/format/) |
 | `reloadInterval` | `1800000` (30 mins) | How often should the data be fetched. |
-| `reverseTeams` | `false` | Flag to switch home and away team. |
+| `reverseTeams` | `false` | Flag to switch order of home and away team. |
+| `tableSize` | `'small'` | Font size of table. Possible values: `'xsmall'`, `'small'`, `'medium'`, `'large'` and `'xlarge'` |
 
 ## OPTIONAL: Voice Control
 

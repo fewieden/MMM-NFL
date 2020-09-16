@@ -8,7 +8,6 @@
  */
 
 Module.register('MMM-NFL', {
-
     modes: {
         P: 'Pre-Season',
         R: 'Regular-Season',
@@ -34,17 +33,14 @@ Module.register('MMM-NFL', {
         P: 'UPCOMING'
     },
 
-    renamedTeams: {
-        LA: 'LAR'
-    },
-
     defaults: {
         colored: false,
         helmets: false,
         focus_on: false,
         format: 'ddd h:mm',
-        reloadInterval: 30 * 60 * 1000,       // every 30 minutes
-        reverseTeams: false
+        reloadInterval: 30 * 60 * 1000, // every 30 minutes
+        reverseTeams: false,
+        tableSize: 'small'
     },
 
     statistics: false,
@@ -167,7 +163,7 @@ Module.register('MMM-NFL', {
             scores.appendChild(text);
         } else {
             const table = document.createElement('table');
-            table.classList.add('medium', 'table');
+            table.classList.add(this.config.tableSize, 'table');
 
             table.appendChild(this.createLabelRow());
 
@@ -280,7 +276,7 @@ Module.register('MMM-NFL', {
             firstTeam.classList.add('align-right');
             this.appendBallPossession(data, false, firstTeam);
             const firstTeamSpan = document.createElement('span');
-            firstTeamSpan.innerHTML = this.getTeamName(data[this.config.reverseTeams ? 'v' : 'h']);
+            firstTeamSpan.innerHTML = data[this.config.reverseTeams ? 'v' : 'h'];
             firstTeam.appendChild(firstTeamSpan);
             row.appendChild(firstTeam);
 
@@ -307,21 +303,13 @@ Module.register('MMM-NFL', {
             const secondTeam = document.createElement('td');
             secondTeam.classList.add('align-left');
             const secondTeamSpan = document.createElement('span');
-            secondTeamSpan.innerHTML = this.getTeamName(data[this.config.reverseTeams ? 'h' : 'v']);
+            secondTeamSpan.innerHTML = data[this.config.reverseTeams ? 'h' : 'v'];
             secondTeam.appendChild(secondTeamSpan);
             this.appendBallPossession(data, true, secondTeam);
             row.appendChild(secondTeam);
 
             appendTo.appendChild(row);
         }
-    },
-
-    getTeamName(name) {
-        if (Object.prototype.hasOwnProperty.call(this.renamedTeams, name)) {
-            return this.renamedTeams[name];
-        }
-
-        return name;
     },
 
     appendBallPossession(data, firstTeam, appendTo) {
