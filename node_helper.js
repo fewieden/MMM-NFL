@@ -16,8 +16,8 @@ const StatisticsAPI = require('./StatisticsAPI.js');
 module.exports = NodeHelper.create({
 
     urls: {
-        regular: 'http://www.nfl.com/liveupdate/scorestrip/ss.xml',
-        post: 'http://www.nfl.com/liveupdate/scorestrip/postseason/ss.xml'
+        regular: 'http://static.nfl.com/liveupdate/scorestrip/ss.xml',
+        post: 'http://static.nfl.com/liveupdate/scorestrip/postseason/ss.xml'
     },
     mode: 'regular',
     scores: [],

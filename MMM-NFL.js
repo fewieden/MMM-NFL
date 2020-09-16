@@ -8,16 +8,16 @@
  */
 
 Module.register('MMM-NFL', {
-
     modes: {
         P: 'Pre-Season',
         R: 'Regular-Season',
-        POST: 'Post-Season'
+        POST: 'Post-Season',
+        PRO: 'Pro-Bowl'
     },
 
     details: {
         y: (new Date()).getFullYear(),
-        t: 'P'
+        t: 'R'
     },
 
     states: {
@@ -38,7 +38,9 @@ Module.register('MMM-NFL', {
         helmets: false,
         focus_on: false,
         format: 'ddd h:mm',
-        reloadInterval: 30 * 60 * 1000       // every 30 minutes
+        reloadInterval: 30 * 60 * 1000, // every 30 minutes
+        reverseTeams: false,
+        tableSize: 'small'
     },
 
     statistics: false,
@@ -150,7 +152,8 @@ Module.register('MMM-NFL', {
         const wrapper = document.createElement('div');
         const scores = document.createElement('div');
         const header = document.createElement('header');
-        header.innerHTML = `NFL ${this.modes[this.details.t] || this.details.t} ${this.details.y}`;
+        header.innerHTML = `NFL ${this.modes[this.details.t] || this.details.t} ${this.details.y}
+            Week ${this.details.w}`;
         scores.appendChild(header);
 
         if (!this.scores) {
@@ -160,7 +163,7 @@ Module.register('MMM-NFL', {
             scores.appendChild(text);
         } else {
             const table = document.createElement('table');
-            table.classList.add('small', 'table');
+            table.classList.add(this.config.tableSize, 'table');
 
             table.appendChild(this.createLabelRow());
 
@@ -224,19 +227,19 @@ Module.register('MMM-NFL', {
         dateLabel.appendChild(dateIcon);
         labelRow.appendChild(dateLabel);
 
-        const homeLabel = document.createElement('th');
-        homeLabel.innerHTML = this.translate('HOME');
-        homeLabel.setAttribute('colspan', 3);
-        labelRow.appendChild(homeLabel);
+        const firstLabel = document.createElement('th');
+        firstLabel.innerHTML = this.translate(this.config.reverseTeams ? 'AWAY' : 'HOME');
+        firstLabel.setAttribute('colspan', 3);
+        labelRow.appendChild(firstLabel);
 
         const vsLabel = document.createElement('th');
         vsLabel.innerHTML = '';
         labelRow.appendChild(vsLabel);
 
-        const awayLabel = document.createElement('th');
-        awayLabel.innerHTML = this.translate('AWAY');
-        awayLabel.setAttribute('colspan', 3);
-        labelRow.appendChild(awayLabel);
+        const secondLabel = document.createElement('th');
+        secondLabel.innerHTML = this.translate(this.config.reverseTeams ? 'HOME' : 'AWAY');
+        secondLabel.setAttribute('colspan', 3);
+        labelRow.appendChild(secondLabel);
 
         return labelRow;
     },
@@ -269,57 +272,56 @@ Module.register('MMM-NFL', {
             }
             row.appendChild(date);
 
-            const homeTeam = document.createElement('td');
-            homeTeam.classList.add('align-right');
-            this.appendBallPossession(data, true, homeTeam);
-            const homeTeamSpan = document.createElement('span');
-            homeTeamSpan.innerHTML = data.h;
-            homeTeam.appendChild(homeTeamSpan);
-            row.appendChild(homeTeam);
+            const firstTeam = document.createElement('td');
+            firstTeam.classList.add('align-right');
+            this.appendBallPossession(data, false, firstTeam);
+            const firstTeamSpan = document.createElement('span');
+            firstTeamSpan.innerHTML = data[this.config.reverseTeams ? 'v' : 'h'];
+            firstTeam.appendChild(firstTeamSpan);
+            row.appendChild(firstTeam);
 
-            const homeLogo = document.createElement('td');
-            homeLogo.appendChild(this.createIcon(data.h));
-            row.appendChild(homeLogo);
+            const firstLogo = document.createElement('td');
+            firstLogo.appendChild(this.createIcon(data[this.config.reverseTeams ? 'v' : 'h']));
+            row.appendChild(firstLogo);
 
-            const homeScore = document.createElement('td');
-            homeScore.innerHTML = data.hs;
-            row.appendChild(homeScore);
+            const firstScore = document.createElement('td');
+            firstScore.innerHTML = data[this.config.reverseTeams ? 'vs' : 'hs'];
+            row.appendChild(firstScore);
 
             const vs = document.createElement('td');
             vs.innerHTML = ':';
             row.appendChild(vs);
 
-            const awayScore = document.createElement('td');
-            awayScore.innerHTML = data.vs;
-            row.appendChild(awayScore);
+            const secondScore = document.createElement('td');
+            secondScore.innerHTML = data[this.config.reverseTeams ? 'hs' : 'vs'];
+            row.appendChild(secondScore);
 
-            const awayLogo = document.createElement('td');
-            awayLogo.appendChild(this.createIcon(data.v, true));
-            row.appendChild(awayLogo);
+            const secondLogo = document.createElement('td');
+            secondLogo.appendChild(this.createIcon(data[this.config.reverseTeams ? 'h' : 'v'], true));
+            row.appendChild(secondLogo);
 
-            const awayTeam = document.createElement('td');
-            awayTeam.classList.add('align-left');
-            const awayTeamSpan = document.createElement('span');
-            awayTeamSpan.innerHTML = data.v;
-            awayTeam.appendChild(awayTeamSpan);
-            this.appendBallPossession(data, false, awayTeam);
-            row.appendChild(awayTeam);
+            const secondTeam = document.createElement('td');
+            secondTeam.classList.add('align-left');
+            const secondTeamSpan = document.createElement('span');
+            secondTeamSpan.innerHTML = data[this.config.reverseTeams ? 'h' : 'v'];
+            secondTeam.appendChild(secondTeamSpan);
+            this.appendBallPossession(data, true, secondTeam);
+            row.appendChild(secondTeam);
 
             appendTo.appendChild(row);
         }
     },
 
-    appendBallPossession(data, homeTeam, appendTo) {
-        const team = homeTeam ? data.h : data.v;
+    appendBallPossession(data, firstTeam, appendTo) {
+        const team = firstTeam ? data.h : data.v;
         if (data.p === team) {
             const ballIcon = document.createElement('img');
             ballIcon.src = this.file('icons/football.png');
-            if (homeTeam) {
+            if (firstTeam) {
                 ballIcon.classList.add('ball-home');
             } else {
                 ballIcon.classList.add('ball-away');
-            }
-            if (data.rz === '1') {
+            } if (data.rz === '1') {
                 ballIcon.classList.add('redzone');
             }
             appendTo.appendChild(ballIcon);

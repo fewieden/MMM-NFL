@@ -1,6 +1,6 @@
 {
   "name": "mmm-nfl",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "National Football League Module for MagicMirror2",
   "scripts": {
     "lint": "./node_modules/.bin/eslint . && ./node_modules/.bin/stylelint ."
@@ -27,9 +27,9 @@
     "stylelint-config-standard": "^16.0.0"
   },
   "dependencies": {
-    "jsdom": "^9.4.2",
-    "request": "^2.74.0",
-    "xml2js": "^0.4.17",
-    "moment-timezone": "^0.5.5"
+    "jsdom": "^16.4.0",
+    "request": "^2.88.2",
+    "xml2js": "^0.4.23",
+    "moment-timezone": "^0.5.31"
   }
 }
