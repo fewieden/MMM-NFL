@@ -28,8 +28,8 @@
   },
   "dependencies": {
     "jsdom": "^16.4.0",
-    "request": "^2.74.0",
-    "xml2js": "^0.4.17",
-    "moment-timezone": "^0.5.5"
+    "request": "^2.88.2",
+    "xml2js": "^0.4.23",
+    "moment-timezone": "^0.5.31"
   }
 }
