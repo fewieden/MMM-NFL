@@ -333,7 +333,7 @@ Module.register('MMM-NFL', {
         row.classList.add('row');
 
         const date = document.createElement('td');
-        date.innerHTML = `${this.translate('WEEK')} ${this.details.w}`;
+        date.innerHTML = this.translate('WEEK', {weekNumber: this.details.w});
         row.appendChild(date);
 
         const team = document.createElement('td');
