@@ -1,5 +1,11 @@
 # MMM-NFL Changelog
 
+## [1.1.1]
+
+### Fixed
+
+* Bye week translation https://github.com/fewieden/MMM-NFL/issues/37
+
 ## [1.1.0]
 
 ### Fixed
