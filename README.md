@@ -11,10 +11,11 @@ National Football League Module for MagicMirror<sup>2</sup>
 * An installation of [MagicMirror<sup>2</sup>](https://github.com/MichMich/MagicMirror)
 * OPTIONAL: [Voice Control](https://github.com/fewieden/MMM-voice)
 * npm
-* [request](https://www.npmjs.com/package/request)
-* [xml2js](https://www.npmjs.com/package/xml2js)
 * [jsdom](https://www.npmjs.com/package/jsdom)
 * [moment-timezone](https://www.npmjs.com/package/moment-timezone)
+* [node-fetch](https://www.npmjs.com/package/node-fetch)
+* [request](https://www.npmjs.com/package/request)
+* [xml2js](https://www.npmjs.com/package/xml2js)
 
 ## Installation
 
@@ -26,7 +27,7 @@ National Football League Module for MagicMirror<sup>2</sup>
         module: 'MMM-NFL',
         position: 'top_right',
         config: {
-            ...
+            // all your config options, which are different than their default values
         }
     }
     ```
