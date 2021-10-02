@@ -9,10 +9,11 @@
 
 Module.register('MMM-NFL', {
     modes: {
-        P: 'Pre-Season',
+        P: 'Preseason',
         R: 'Regular-Season',
         POST: 'Post-Season',
-        PRO: 'Pro-Bowl'
+        PRO: 'Pro-Bowl',
+        OFF: 'Offseason',
     },
 
     details: {
@@ -100,6 +101,7 @@ Module.register('MMM-NFL', {
 
     socketNotificationReceived(notification, payload) {
         if (notification === 'SCORES') {
+            console.log(payload);
             this.scores = payload.scores;
             this.details = payload.details;
             this.updateDom(300);
