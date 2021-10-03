@@ -17,6 +17,8 @@ const teamNameMapping = {
 function getGameStatus(status = {}) {
     if (status.type?.state === 'pre') {
         return 'P';
+    } else if (status.type?.name === 'STATUS_HALFTIME') {
+        return 'H';
     } else if (status.type?.state === 'post') {
         return 'F';
     }
