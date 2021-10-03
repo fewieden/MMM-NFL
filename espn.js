@@ -20,7 +20,13 @@ function getGameStatus(status = {}) {
     } else if (status.type?.name === 'STATUS_HALFTIME') {
         return 'H';
     } else if (status.type?.state === 'post') {
+        if (status.period > 4) {
+            return 'FO';
+        }
+
         return 'F';
+    } else if (status.period > 4) {
+        return 'OT';
     }
 
     return status.period;
