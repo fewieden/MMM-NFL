@@ -64,7 +64,13 @@ async function getData() {
 
     const events = parsedResponse?.events || [];
 
-    const scores = events.map(mapEventEntry);
+    const scores = events.map(mapEventEntry).sort((a, b) => {
+        if (a.$.starttime === b.$.starttime) {
+            return 0;
+        }
+
+        return a.$.starttime > b.$.starttime ? 1 : -1
+    });
 
     return {details, scores};
 }
