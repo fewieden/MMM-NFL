@@ -9,10 +9,11 @@
 
 Module.register('MMM-NFL', {
     modes: {
-        P: 'Pre-Season',
+        P: 'Preseason',
         R: 'Regular-Season',
         POST: 'Post-Season',
-        PRO: 'Pro-Bowl'
+        PRO: 'Pro-Bowl',
+        OFF: 'Offseason',
     },
 
     details: {

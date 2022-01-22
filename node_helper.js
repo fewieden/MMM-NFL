@@ -7,11 +7,14 @@
 
 /* eslint-env node */
 
-const NodeHelper = require('node_helper');
 const request = require('request');
 const parser = require('xml2js').parseString;
 const moment = require('moment-timezone');
-const StatisticsAPI = require('./StatisticsAPI.js');
+
+const NodeHelper = require('node_helper');
+
+const ESPN = require('./espn');
+const StatisticsAPI = require('./StatisticsAPI');
 
 module.exports = NodeHelper.create({
 
@@ -39,33 +42,40 @@ module.exports = NodeHelper.create({
             setInterval(() => {
                 this.getData();
             }, this.config.reloadInterval);
-            setInterval(() => {
-                this.fetchOnLiveState();
-            }, 60 * 1000);
+            // setInterval(() => {
+            //     this.fetchOnLiveState();
+            // }, 60 * 1000);
         } else if (notification === 'GET_STATISTICS') {
             this.getStatistics(payload);
         }
     },
 
-    getData() {
-        request({ url: this.urls[this.mode] }, (error, response, body) => {
-            if (response.statusCode === 200) {
-                parser(body, (err, result) => {
-                    if (err) {
-                        console.log(err);
-                    } else if (Object.prototype.hasOwnProperty.call(result, 'ss')) {
-                        this.scores = result.ss.gms[0].g;
-                        this.details = result.ss.gms[0].$;
-                        this.setMode();
-                        this.sendSocketNotification('SCORES', { scores: this.scores, details: this.details });
-                    } else {
-                        console.log('Error no NFL data');
-                    }
-                });
-            } else {
-                console.log(`Error getting NFL scores ${response.statusCode}`);
-            }
-        });
+    async getData() {
+        // request({ url: this.urls[this.mode] }, (error, response, body) => {
+        //     if (response.statusCode === 200) {
+        //         parser(body, (err, result) => {
+        //             if (err) {
+        //                 console.log(err);
+        //             } else if (Object.prototype.hasOwnProperty.call(result, 'ss')) {
+        //                 this.scores = result.ss.gms[0].g;
+        //                 this.details = result.ss.gms[0].$;
+        //                 this.setMode();
+        //                 this.sendSocketNotification('SCORES', { scores: this.scores, details: this.details });
+        //             } else {
+        //                 console.log('Error no NFL data');
+        //             }
+        //         });
+        //     } else {
+        //         console.log(`Error getting NFL scores ${response.statusCode}`);
+        //     }
+        // });
+
+        try {
+            const data = await ESPN.getData();
+            this.sendSocketNotification('SCORES', data);
+        } catch (error) {
+            console.log(`Error getting NFL scores ${error}`);
+        }
     },
 
     getStatistics(type) {
