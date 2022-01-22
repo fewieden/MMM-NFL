@@ -101,7 +101,6 @@ Module.register('MMM-NFL', {
 
     socketNotificationReceived(notification, payload) {
         if (notification === 'SCORES') {
-            console.log(payload);
             this.scores = payload.scores;
             this.details = payload.details;
             this.updateDom(300);

@@ -1,16 +1,10 @@
 # MMM-NFL Changelog
 
-## [Unreleased]
-
-### Fixed
+## [1.2.0]
 
 ### Added
 
 * New API provider: ESPN
-
-### Changed
-
-### Removed
 
 ## [1.1.1]
 
