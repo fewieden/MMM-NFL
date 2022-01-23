@@ -42,7 +42,7 @@ function mapEventEntry(event = {}) {
     const ongoing = !['pre', 'post'].includes(event.status?.type?.state);
     const remainingTime = ongoing && event.status?.displayClock;
 
-    const rz = !event.competitions?.[0]?.situation?.isRedZone ? '1' : '0';
+    const rz = event.competitions?.[0]?.situation?.isRedZone ? '1' : '0';
     const possessionTeamId = event.competitions?.[0]?.situation?.possession;
     const possessionTeam = event.competitions?.[0]?.competitors?.find(c => c.id === possessionTeamId);
     const p = getTeamName(possessionTeam);
