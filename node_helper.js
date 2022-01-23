@@ -14,7 +14,6 @@ const moment = require('moment-timezone');
 const NodeHelper = require('node_helper');
 
 const ESPN = require('./espn');
-const StatisticsAPI = require('./StatisticsAPI');
 
 module.exports = NodeHelper.create({
 
@@ -45,8 +44,6 @@ module.exports = NodeHelper.create({
             // setInterval(() => {
             //     this.fetchOnLiveState();
             // }, 60 * 1000);
-        } else if (notification === 'GET_STATISTICS') {
-            this.getStatistics(payload);
         }
     },
 
@@ -76,17 +73,6 @@ module.exports = NodeHelper.create({
         } catch (error) {
             console.log(`Error getting NFL scores ${error}`);
         }
-    },
-
-    getStatistics(type) {
-        StatisticsAPI.getStats(type, (err, stats) => {
-            if (err) {
-                console.log(`MMM-NFL: Error => ${err}`);
-                this.sendSocketNotification('ERROR', { error: `Statistics for ${type} not found!` });
-            } else {
-                this.sendSocketNotification('STATISTICS', stats);
-            }
-        });
     },
 
     setMode() {

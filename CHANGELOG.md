@@ -13,6 +13,7 @@
 ### Removed
 
 * Help and statistic modals
+* MMM-voice integration
 
 ## [1.2.1]
 

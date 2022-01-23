@@ -42,23 +42,3 @@
 .MMM-NFL .ball-away {
     margin-left: 10px;
 }
-
-.MMM-NFL-blur {
-    -webkit-filter: blur(2px) brightness(50%);
-    filter: blur(2px) brightness(50%);
-}
-
-.MMM-NFL .modal {
-    position: fixed;
-    text-align: left;
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-}
-
-.MMM-NFL .modal ul {
-    margin: 0;
-}

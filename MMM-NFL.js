@@ -44,28 +44,6 @@ Module.register('MMM-NFL', {
         tableSize: 'small'
     },
 
-    statistics: false,
-    help: false,
-
-    voice: {
-        mode: 'FOOTBALL',
-        sentences: [
-            'OPEN HELP',
-            'CLOSE HELP',
-            'SHOW HELMETS',
-            'SHOW LOGOS',
-            'COLOR ON',
-            'COLOR OFF',
-            'SHOW PASSING YARDS STATISTIC',
-            'SHOW RUSHING YARDS STATISTIC',
-            'SHOW RECEIVING YARDS STATISTIC',
-            'SHOW TACKLES STATISTIC',
-            'SHOW SACKS STATISTIC',
-            'SHOW INTERCEPTIONS STATISTIC',
-            'HIDE STATISTIC'
-        ]
-    },
-
     getTranslations() {
         return {
             en: 'translations/en.json',
@@ -88,26 +66,10 @@ Module.register('MMM-NFL', {
         moment.locale(config.language);
     },
 
-    notificationReceived(notification, payload, sender) {
-        if (notification === 'ALL_MODULES_STARTED') {
-            this.sendNotification('REGISTER_VOICE_MODULE', this.voice);
-        } else if (notification === 'VOICE_FOOTBALL' && sender.name === 'MMM-voice') {
-            this.checkCommands(payload);
-        } else if (notification === 'VOICE_MODE_CHANGED' && sender.name === 'MMM-voice' && payload.old === this.voice.mode) {
-            this.help = false;
-            this.statistics = false;
-            this.updateDom(300);
-        }
-    },
-
     socketNotificationReceived(notification, payload) {
         if (notification === 'SCORES') {
             this.scores = payload.scores;
             this.details = payload.details;
-            this.updateDom(300);
-        } else if (notification === 'STATISTICS') {
-            this.help = false;
-            this.statistics = payload;
             this.updateDom(300);
         }
     },
@@ -136,44 +98,6 @@ Module.register('MMM-NFL', {
             focusedTeamsWithByeWeeks,
             includes: (array, item) => array.includes(item)
         };
-    },
-
-    checkCommands(data) {
-        if (/(HELP)/g.test(data)) {
-            if (/(CLOSE)/g.test(data) || (this.help && !/(OPEN)/g.test(data))) {
-                this.help = false;
-            } else if (/(OPEN)/g.test(data) || (!this.help && !/(CLOSE)/g.test(data))) {
-                this.statistics = false;
-                this.help = true;
-            }
-        } else if (/(HELMETS)/g.test(data)) {
-            this.config.helmets = true;
-        } else if (/(LOGOS)/g.test(data)) {
-            this.config.helmets = false;
-        } else if (/(COLOR)/g.test(data)) {
-            if (/(OFF)/g.test(data) || (this.config.colored && !/(ON)/g.test(data))) {
-                this.config.colored = false;
-            } else if (/(ON)/g.test(data) || (!this.config.colored && !/(OFF)/g.test(data))) {
-                this.config.colored = true;
-            }
-        } else if (/(STATISTIC)/g.test(data)) {
-            if (/(HIDE)/g.test(data)) {
-                this.statistics = false;
-            } else if (/(PASSING)/g.test(data)) {
-                this.sendSocketNotification('GET_STATISTICS', 'Passing Yards');
-            } else if (/(RUSHING)/g.test(data)) {
-                this.sendSocketNotification('GET_STATISTICS', 'Rushing Yards');
-            } else if (/(RECEIVING)/g.test(data)) {
-                this.sendSocketNotification('GET_STATISTICS', 'Receiving Yards');
-            } else if (/(TACKLES)/g.test(data)) {
-                this.sendSocketNotification('GET_STATISTICS', 'Tackles');
-            } else if (/(SACKS)/g.test(data)) {
-                this.sendSocketNotification('GET_STATISTICS', 'Sacks');
-            } else if (/(INTERCEPTIONS)/g.test(data)) {
-                this.sendSocketNotification('GET_STATISTICS', 'Interceptions');
-            }
-        }
-        this.updateDom(300);
     },
 
     addFilters() {
