@@ -1,6 +1,6 @@
 # MMM-NFL
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/fewieden/MMM-NFL/master/LICENSE) [![Code Climate](https://codeclimate.com/github/fewieden/MMM-NFL/badges/gpa.svg?style=flat)](https://codeclimate.com/github/fewieden/MMM-NFL) [![Known Vulnerabilities](https://snyk.io/test/github/fewieden/mmm-nfl/badge.svg)](https://snyk.io/test/github/fewieden/mmm-nfl)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/fewieden/MMM-NFL/master/LICENSE) ![Build status](https://github.com/fewieden/MMM-NFL/workflows/build/badge.svg) [![Code Climate](https://codeclimate.com/github/fewieden/MMM-NFL/badges/gpa.svg?style=flat)](https://codeclimate.com/github/fewieden/MMM-NFL) [![Known Vulnerabilities](https://snyk.io/test/github/fewieden/mmm-nfl/badge.svg)](https://snyk.io/test/github/fewieden/mmm-nfl)
 
 National Football League Module for MagicMirror<sup>2</sup>
 
