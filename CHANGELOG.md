@@ -1,5 +1,16 @@
 # MMM-NFL Changelog
 
+## [1.2.1]
+
+### Added
+
+* Ball possession support for API provider ESPN
+* Redzone support for API provider ESPN
+
+### Fixed
+
+* Ball possession team if config option `reverseTeams` is set to `false`
+
 ## [1.2.0]
 
 ### Added
