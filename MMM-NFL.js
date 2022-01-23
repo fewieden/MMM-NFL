@@ -273,16 +273,20 @@ Module.register('MMM-NFL', {
             }
             row.appendChild(date);
 
+            const firstTeamName = data[this.config.reverseTeams ? 'v' : 'h'];
+
             const firstTeam = document.createElement('td');
             firstTeam.classList.add('align-right');
-            this.appendBallPossession(data, false, firstTeam);
+            if (data.p === firstTeamName) {
+                this.appendBallPossession(data.rz, true, firstTeam);
+            }
             const firstTeamSpan = document.createElement('span');
-            firstTeamSpan.innerHTML = data[this.config.reverseTeams ? 'v' : 'h'];
+            firstTeamSpan.innerHTML = firstTeamName;
             firstTeam.appendChild(firstTeamSpan);
             row.appendChild(firstTeam);
 
             const firstLogo = document.createElement('td');
-            firstLogo.appendChild(this.createIcon(data[this.config.reverseTeams ? 'v' : 'h']));
+            firstLogo.appendChild(this.createIcon(firstTeamName));
             row.appendChild(firstLogo);
 
             const firstScore = document.createElement('td');
@@ -297,36 +301,37 @@ Module.register('MMM-NFL', {
             secondScore.innerHTML = data[this.config.reverseTeams ? 'hs' : 'vs'];
             row.appendChild(secondScore);
 
+            const secondTeamName = data[this.config.reverseTeams ? 'h' : 'v'];
+
             const secondLogo = document.createElement('td');
-            secondLogo.appendChild(this.createIcon(data[this.config.reverseTeams ? 'h' : 'v'], true));
+            secondLogo.appendChild(this.createIcon(secondTeamName, true));
             row.appendChild(secondLogo);
 
             const secondTeam = document.createElement('td');
             secondTeam.classList.add('align-left');
             const secondTeamSpan = document.createElement('span');
-            secondTeamSpan.innerHTML = data[this.config.reverseTeams ? 'h' : 'v'];
+            secondTeamSpan.innerHTML = secondTeamName;
             secondTeam.appendChild(secondTeamSpan);
-            this.appendBallPossession(data, true, secondTeam);
+            if (data.p === secondTeamName) {
+                this.appendBallPossession(data.rz, false, secondTeam);
+            }
             row.appendChild(secondTeam);
 
             appendTo.appendChild(row);
         }
     },
 
-    appendBallPossession(data, firstTeam, appendTo) {
-        const team = firstTeam ? data.h : data.v;
-        if (data.p === team) {
-            const ballIcon = document.createElement('img');
-            ballIcon.src = this.file('icons/football.png');
-            if (firstTeam) {
-                ballIcon.classList.add('ball-home');
-            } else {
-                ballIcon.classList.add('ball-away');
-            } if (data.rz === '1') {
-                ballIcon.classList.add('redzone');
-            }
-            appendTo.appendChild(ballIcon);
+    appendBallPossession(redzone, firstTeam, appendTo) {
+        const ballIcon = document.createElement('img');
+        ballIcon.src = this.file('icons/football.png');
+        if (firstTeam) {
+            ballIcon.classList.add('ball-home');
+        } else {
+            ballIcon.classList.add('ball-away');
+        } if (redzone === '1') {
+            ballIcon.classList.add('redzone');
         }
+        appendTo.appendChild(ballIcon);
     },
 
     appendByeWeek(teamName, appendTo) {
