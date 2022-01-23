@@ -7,6 +7,7 @@
 ### Added
 
 * Nunjuck templates
+* Added instructions for global config options
 
 ### Changed
 

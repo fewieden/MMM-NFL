@@ -31,6 +31,16 @@ National Football League Module for MagicMirror<sup>2</sup>
 
 1. Run command `npm install --production` in `~/MagicMirror/modules/MMM-NFL` directory.
 
+## Global config
+
+| **Option** | **Default** | **Description** |
+| --- | --- | --- |
+| `locale` | `undefined` | By default it is using your system settings. You can specify the locale in the global MagicMirror config. Possible values are for e.g.: `'en-US'` or `'de-DE'`. |
+
+To set a global config you have to set the value in your config.js file inside the MagicMirror project.
+
+![](.github/global.png)
+
 ## Config Options
 
 | **Option** | **Default** | **Description** |

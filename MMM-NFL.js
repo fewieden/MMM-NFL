@@ -63,7 +63,7 @@ Module.register('MMM-NFL', {
         Log.info(`Starting module: ${this.name}`);
         this.addFilters();
         this.sendSocketNotification('CONFIG', this.config);
-        moment.locale(config.language);
+        moment.locale(config.locale);
     },
 
     socketNotificationReceived(notification, payload) {
