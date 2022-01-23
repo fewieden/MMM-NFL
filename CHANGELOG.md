@@ -1,5 +1,15 @@
 # MMM-NFL Changelog
 
+## [Unreleased]
+
+### Fixed
+
+### Added
+
+### Changed
+
+### Removed
+
 ## [1.2.1]
 
 ### Added
