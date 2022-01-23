@@ -13,6 +13,8 @@
 
 ### Changed
 
+* Data structure
+
 ### Removed
 
 * Help and statistic modals

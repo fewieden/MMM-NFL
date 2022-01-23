@@ -1,5 +1,5 @@
 <header>
-    NFL {{modes[details.t] or details.t}} {{details.y}} Week {{details.w}}
+    NFL {{modes[details.stage] or details.stage}} {{details.season}} Week {{details.week}}
 </header>
 {% if not scores %}
     <div class="dimmed light">{{ "LOADING" | translate }}</div>
@@ -16,41 +16,41 @@
         <tbody>
             {% for game in scores %}
                 {% if config.reverseTeams %}
-                    {% set firstTeamProperty = 'v' %}
-                    {% set secondTeamProperty = 'h' %}
+                    {% set firstTeamPrefix = 'away' %}
+                    {% set secondTeamPrefix = 'home' %}
                 {% else %}
-                    {% set firstTeamProperty = 'h' %}
-                    {% set secondTeamProperty = 'v' %}
+                    {% set firstTeamPrefix = 'home' %}
+                    {% set secondTeamPrefix = 'away' %}
                 {% endif %}
 
                 <tr class="row">
                     <td>
-                        {% if includes([1, 2, 3, 4, "H", "OT"], game.$.q) %}
-                            <div class="{{ "live" if game.$.k }}">{{ states[game.$.q] | translate }}</div>
-                            {% if game.$.k %}
-                                <div class="live">{{game.$.k}} {{ "TIME_LEFT" | translate }}</div>
+                        {% if includes([1, 2, 3, 4, "halftime", "overtime"], game.status) %}
+                            <div class="{{ "live" if game.remainingTime }}">{{ states[game.status] | translate }}</div>
+                            {% if game.remainingTime %}
+                                <div class="live">{{game.remainingTime}} {{ "TIME_LEFT" | translate }}</div>
                             {% endif %}
-                        {% elif game.$.q === "P" %}
-                            {{ game.$.starttime | formatDate }}
+                        {% elif game.status === "pregame" %}
+                            {{ game.timestamp | formatDate }}
                         {% else %}
-                            <span class="dimmed">{{ states[game.$.q] | translate }}</span>
+                            <span class="dimmed">{{ states[game.status] | translate }}</span>
                         {% endif %}
                     </td>
                     <td class="align-right">
-                        {% if game.$.p === game.$[firstTeamProperty] %}
-                            <i class="fa fa-football-ball ball-home {{ "redzone" if game.$.rz === "1" }}"></i>
+                        {% if game.ballPossession === game[firstTeamPrefix + "Team"] %}
+                            <i class="fa fa-football-ball ball-home {{ "redzone" if game.inRedZone }}"></i>
                         {% endif %}
-                        <span>{{ game.$[firstTeamProperty] }}</span>
+                        <span>{{ game[firstTeamPrefix + "Team"] }}</span>
                     </td>
-                    <td><img src="{{ game.$[firstTeamProperty] | iconUrl }}" class="{{ "icon" if not config.colored }}"/></td>
-                    <td>{{ game.$.vs if config.reverseTeams else game.$.hs }}</td>
+                    <td><img src="{{ game[firstTeamPrefix + "Team"] | iconUrl }}" class="{{ "icon" if not config.colored }}"/></td>
+                    <td>{{ game[firstTeamPrefix + "Score"] }}</td>
                     <td>:</td>
-                    <td>{{ game.$.hs if config.reverseTeams else game.$.vs }}</td>
-                    <td><img src="{{ game.$[secondTeamProperty] | iconUrl }}" class="{{ "icon" if not config.colored }} {{ "away" if config.helmets }}"/></td>
+                    <td>{{ game[secondTeamPrefix + "Score"] }}</td>
+                    <td><img src="{{ game[secondTeamPrefix + "Team"] | iconUrl }}" class="{{ "icon" if not config.colored }} {{ "away" if config.helmets }}"/></td>
                     <td class="align-left">
-                        <span>{{ game.$[secondTeamProperty] }}</span>
-                        {% if game.$.p === game.$[secondTeamProperty] %}
-                            <i class="fa fa-football-ball ball-away {{ "redzone" if game.$.rz === "1" }}"></i>
+                        <span>{{ game[secondTeamPrefix + "Team"] }}</span>
+                        {% if game.ballPossession === game[secondTeamPrefix + "Team"] %}
+                            <i class="fa fa-football-ball ball-away {{ "redzone" if game.inRedZone }}"></i>
                         {% endif %}
                     </td>
                 </tr>

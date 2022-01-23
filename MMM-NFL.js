@@ -9,16 +9,15 @@
 
 Module.register('MMM-NFL', {
     modes: {
-        P: 'Preseason',
-        R: 'Regular-Season',
+        PRE: 'Preseason',
+        REG: 'Regular-Season',
         POST: 'Post-Season',
-        PRO: 'Pro-Bowl',
         OFF: 'Offseason',
     },
 
     details: {
-        y: (new Date()).getFullYear(),
-        t: 'R'
+        season: (new Date()).getFullYear(),
+        stage: 'REG'
     },
 
     states: {
@@ -26,12 +25,11 @@ Module.register('MMM-NFL', {
         2: '2ND_QUARTER',
         3: '3RD_QUARTER',
         4: '4TH_QUARTER',
-        H: 'HALF_TIME',
-        OT: 'OVER_TIME',
-        F: 'FINAL',
-        FO: 'FINAL_OVERTIME',
-        T: 'TIE',
-        P: 'UPCOMING'
+        halftime: 'HALF_TIME',
+        overtime: 'OVER_TIME',
+        final: 'FINAL',
+        'final-overtime': 'FINAL_OVERTIME',
+        pregame: 'UPCOMING'
     },
 
     defaults: {
@@ -82,7 +80,7 @@ Module.register('MMM-NFL', {
         let focusedTeamsWithByeWeeks = [];
         if (Array.isArray(this.config.focus_on) && this.scores) {
             for (const team of this.config.focus_on) {
-                let match = this.scores.find(m => team === m.$.h || team === m.$.v);
+                let match = this.scores.find(m => team === m.homeTeam || team === m.awayTeam);
                 if (!match) {
                     focusedTeamsWithByeWeeks.push(team);
                 }
