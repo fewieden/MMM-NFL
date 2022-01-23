@@ -1,0 +1,68 @@
+<header>
+    NFL {{modes[details.t] or details.t}} {{details.y}} Week {{details.w}}
+</header>
+{% if not scores %}
+    <div class="dimmed light">{{ "LOADING" | translate }}</div>
+{% else %}
+    <table class="table {{ config.tableSize }}">
+        <thead>
+            <tr>
+                <th><i class="fa fa-calendar"></i></th>
+                <th colspan="3">{{ "AWAY" if config.reverseTeams else "HOME" | translate }}</th>
+                <th></th>
+                <th colspan="3">{{ "HOME" if config.reverseTeams else "AWAY" | translate }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for game in scores %}
+                {% if config.reverseTeams %}
+                    {% set firstTeamProperty = 'v' %}
+                    {% set secondTeamProperty = 'h' %}
+                {% else %}
+                    {% set firstTeamProperty = 'h' %}
+                    {% set secondTeamProperty = 'v' %}
+                {% endif %}
+
+                <tr class="row">
+                    <td>
+                        {% if includes([1, 2, 3, 4, "H", "OT"], game.$.q) %}
+                            <div class="{{ "live" if game.$.k }}">{{ states[game.$.q] | translate }}</div>
+                            {% if game.$.k %}
+                                <div class="live">{{game.$.k}} {{ "TIME_LEFT" | translate }}</div>
+                            {% endif %}
+                        {% elif game.$.q === "P" %}
+                            {{ game.$.starttime | formatDate }}
+                        {% else %}
+                            <span class="dimmed">{{ states[game.$.q] | translate }}</span>
+                        {% endif %}
+                    </td>
+                    <td class="align-right">
+                        {% if game.$.p === game.$[firstTeamProperty] %}
+                            <i class="fa fa-football-ball ball-home {{ "redzone" if game.$.rz === "1" }}"></i>
+                        {% endif %}
+                        <span>{{ game.$[firstTeamProperty] }}</span>
+                    </td>
+                    <td><img src="{{ game.$[firstTeamProperty] | iconUrl }}" class="{{ "icon" if not config.colored }}"/></td>
+                    <td>{{ game.$.vs if config.reverseTeams else game.$.hs }}</td>
+                    <td>:</td>
+                    <td>{{ game.$.hs if config.reverseTeams else game.$.vs }}</td>
+                    <td><img src="{{ game.$[secondTeamProperty] | iconUrl }}" class="{{ "icon" if not config.colored }} {{ "away" if config.helmets }}"/></td>
+                    <td class="align-left">
+                        <span>{{ game.$[secondTeamProperty] }}</span>
+                        {% if game.$.p === game.$[secondTeamProperty] %}
+                            <i class="fa fa-football-ball ball-away {{ "redzone" if game.$.rz === "1" }}"></i>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            {% for team in focusedTeamsWithByeWeeks %}
+                <tr class="row">
+                    <td>{{ "WEEK" | translate({weekNumber: details.w}) }}</td>
+                    <td>{{ team }}</td>
+                    <td><img src="{{ team | iconUrl }}" class="{{ "icon" if not config.colored }} {{ "away" if config.helmets }}"/></td>
+                    <td colspan="5" class="align-left">{{ "BYE_WEEK" | translate }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

@@ -6,9 +6,13 @@
 
 ### Added
 
+* Nunjuck templates
+
 ### Changed
 
 ### Removed
+
+* Help and statistic modals
 
 ## [1.2.1]
 
