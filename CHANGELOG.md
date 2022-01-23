@@ -8,6 +8,7 @@
 
 * Nunjuck templates
 * Added instructions for global config options
+* Github actions: `changelog` and `build`
 * Github config files
 
 ### Changed

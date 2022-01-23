@@ -3,7 +3,7 @@
   "version": "1.2.1",
   "description": "National Football League Module for MagicMirror2",
   "scripts": {
-    "lint": "./node_modules/.bin/eslint . && ./node_modules/.bin/stylelint ."
+    "lint": "eslint . && stylelint ."
   },
   "repository": {
     "type": "git",
