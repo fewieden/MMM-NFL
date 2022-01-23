@@ -45,15 +45,17 @@ function mapEventEntry(event = {}) {
     const possessionTeam = event.competitions?.[0]?.competitors?.find(c => c.id === possessionTeamId);
 
     return {
+        timestamp: event.date,
+        status: getGameStatus(event.status),
+        remainingTime: ongoing && event.status?.displayClock,
+        ballPossession: getTeamName(possessionTeam),
+        inRedZone: event.competitions?.[0]?.situation?.isRedZone,
         homeTeam: getTeamName(event.competitions?.[0]?.competitors?.[0]),
         homeScore: event.competitions?.[0]?.competitors?.[0]?.score,
-        status: getGameStatus(event.status),
-        timestamp: event.date,
+        homeLogo: event.competitions?.[0]?.competitors?.[0]?.team?.logo,
         awayTeam: getTeamName(event.competitions?.[0]?.competitors?.[1]),
         awayScore: event.competitions?.[0]?.competitors?.[1]?.score,
-        remainingTime: ongoing && event.status?.displayClock,
-        inRedZone: event.competitions?.[0]?.situation?.isRedZone,
-        ballPossession: getTeamName(possessionTeam)
+        awayLogo: event.competitions?.[0]?.competitors?.[1]?.team?.logo
     };
 }
 

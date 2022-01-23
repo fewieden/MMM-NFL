@@ -45,8 +45,7 @@ To set a global config you have to set the value in your config.js file inside t
 
 | **Option** | **Default** | **Description** |
 | --- | --- | --- |
-| `colored` | `false` | Remove black/white filter of logos/helmets. |
-| `helmets` | `false` | Show helmets instead of logo. |
+| `colored` | `false` | Remove black/white filter of logos. |
 | `focus_on` | `false` | Display only matches with teams of this array e.g. `['NYG', 'DAL', 'NE']`. |
 | `format` | `'ddd h:mm'` | In which format the date should be displayed. [All Options](http://momentjs.com/docs/#/displaying/format/) |
 | `reloadInterval` | `1800000` (30 mins) | How often should the data be fetched. |

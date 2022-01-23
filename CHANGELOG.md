@@ -7,6 +7,7 @@
 ### Added
 
 * Nunjuck templates
+* Remote team logos
 * Added instructions for global config options
 * Github actions: `changelog` and `build`
 * Github config files
@@ -20,6 +21,8 @@
 * Help and statistic modals
 * MMM-voice integration
 * API provider: NFL XML API
+* Local team logos
+* Config option: `helmets`
 
 ## [1.2.1]
 

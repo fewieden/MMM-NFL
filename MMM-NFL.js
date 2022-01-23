@@ -34,7 +34,6 @@ Module.register('MMM-NFL', {
 
     defaults: {
         colored: false,
-        helmets: false,
         focus_on: false,
         format: 'ddd h:mm',
         reloadInterval: 30 * 60 * 1000, // every 30 minutes

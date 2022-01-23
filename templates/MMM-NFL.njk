@@ -42,11 +42,11 @@
                         {% endif %}
                         <span>{{ game[firstTeamPrefix + "Team"] }}</span>
                     </td>
-                    <td><img src="{{ game[firstTeamPrefix + "Team"] | iconUrl }}" class="{{ "icon" if not config.colored }}"/></td>
+                    <td><img src="{{ game[firstTeamPrefix + "Logo"] }}" class="logo {{ "gray" if not config.colored }}"/></td>
                     <td>{{ game[firstTeamPrefix + "Score"] }}</td>
                     <td>:</td>
                     <td>{{ game[secondTeamPrefix + "Score"] }}</td>
-                    <td><img src="{{ game[secondTeamPrefix + "Team"] | iconUrl }}" class="{{ "icon" if not config.colored }} {{ "away" if config.helmets }}"/></td>
+                    <td><img src="{{ game[secondTeamPrefix + "Logo"] }}" class="logo {{ "gray" if not config.colored }}"/></td>
                     <td class="align-left">
                         <span>{{ game[secondTeamPrefix + "Team"] }}</span>
                         {% if game.ballPossession === game[secondTeamPrefix + "Team"] %}
@@ -57,10 +57,9 @@
             {% endfor %}
             {% for team in focusedTeamsWithByeWeeks %}
                 <tr class="row">
-                    <td>{{ "WEEK" | translate({weekNumber: details.w}) }}</td>
-                    <td>{{ team }}</td>
-                    <td><img src="{{ team | iconUrl }}" class="{{ "icon" if not config.colored }} {{ "away" if config.helmets }}"/></td>
-                    <td colspan="5" class="align-left">{{ "BYE_WEEK" | translate }}</td>
+                    <td>{{ "BYE_WEEK" | translate }}</td>
+                    <td class="align-right">{{ team }}</td>
+                    <td><img src="https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/{{ team }}.png" class="logo {{ "gray" if not config.colored }}"/></td>
                 </tr>
             {% endfor %}
         </tbody>

@@ -10,19 +10,17 @@
     text-align: center;
 }
 
-.MMM-NFL .icon {
+.MMM-NFL .logo {
+    margin-top: 3px;
+    height: 25px;
+}
+
+.MMM-NFL .gray {
     -webkit-filter: grayscale(100%);
 }
 
 .MMM-NFL .row {
     vertical-align: middle;
-}
-
-.MMM-NFL .away {
-    -webkit-transform: scaleX(-1);
-    -moz-transform: scaleX(-1);
-    -o-transform: scaleX(-1);
-    transform: scaleX(-1);
 }
 
 .MMM-NFL .redzone {
