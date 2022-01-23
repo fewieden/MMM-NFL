@@ -1,4 +1,6 @@
-# MMM-NFL [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/fewieden/MMM-NFL/master/LICENSE) [![Build Status](https://travis-ci.org/fewieden/MMM-NFL.svg?branch=master)](https://travis-ci.org/fewieden/MMM-NFL) [![Code Climate](https://codeclimate.com/github/fewieden/MMM-NFL/badges/gpa.svg?style=flat)](https://codeclimate.com/github/fewieden/MMM-NFL) [![Known Vulnerabilities](https://snyk.io/test/github/fewieden/mmm-nfl/badge.svg)](https://snyk.io/test/github/fewieden/mmm-nfl)
+# MMM-NFL
+
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/fewieden/MMM-NFL/master/LICENSE) [![Code Climate](https://codeclimate.com/github/fewieden/MMM-NFL/badges/gpa.svg?style=flat)](https://codeclimate.com/github/fewieden/MMM-NFL) [![Known Vulnerabilities](https://snyk.io/test/github/fewieden/mmm-nfl/badge.svg)](https://snyk.io/test/github/fewieden/mmm-nfl)
 
 National Football League Module for MagicMirror<sup>2</sup>
 
@@ -10,10 +12,7 @@ National Football League Module for MagicMirror<sup>2</sup>
 
 * An installation of [MagicMirror<sup>2</sup>](https://github.com/MichMich/MagicMirror)
 * npm
-* [moment-timezone](https://www.npmjs.com/package/moment-timezone)
 * [node-fetch](https://www.npmjs.com/package/node-fetch)
-* [request](https://www.npmjs.com/package/request)
-* [xml2js](https://www.npmjs.com/package/xml2js)
 
 ## Installation
 

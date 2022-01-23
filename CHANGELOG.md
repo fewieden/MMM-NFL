@@ -14,6 +14,7 @@
 
 * Help and statistic modals
 * MMM-voice integration
+* API provider: NFL XML API
 
 ## [1.2.1]
 

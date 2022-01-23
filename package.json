@@ -27,9 +27,6 @@
     "stylelint-config-standard": "^16.0.0"
   },
   "dependencies": {
-    "moment-timezone": "^0.5.31",
-    "node-fetch": "2.6.5",
-    "request": "^2.88.2",
-    "xml2js": "^0.4.23"
+    "node-fetch": "2.6.5"
   }
 }
