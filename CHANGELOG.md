@@ -10,6 +10,7 @@
 * Remote team logos
 * Readded live game fetching
 * Integrated MagicMirror logger on server side
+* Implemented suspend, resume and stop behavior
 * Added instructions for global config options
 * Github actions: `changelog` and `build`
 * Github config files

@@ -63,6 +63,14 @@ Module.register('MMM-NFL', {
         moment.locale(config.locale);
     },
 
+    suspend() {
+        this.sendSocketNotification('SUSPEND', this.config);
+    },
+
+    resume() {
+        this.sendSocketNotification('CONFIG', this.config);
+    },
+
     socketNotificationReceived(notification, payload) {
         if (notification === 'SCORES') {
             this.scores = payload.scores;

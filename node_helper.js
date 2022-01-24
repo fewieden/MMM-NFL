@@ -18,17 +18,21 @@ module.exports = NodeHelper.create({
     requiresVersion: '2.15.0',
 
     scores: [],
+    reloadInterval: null,
+    liveInterval: null,
 
     socketNotificationReceived(notification, payload) {
         if (notification === 'CONFIG') {
             this.config = payload;
             this.getData();
-            setInterval(() => {
+            this.reloadInterval = setInterval(() => {
                 this.getData();
             }, this.config.reloadInterval);
-            setInterval(() => {
+            this.liveInterval = setInterval(() => {
                 this.fetchOnLiveState();
             }, ONE_MINUTE);
+        } else if (notification === 'SUSPEND') {
+            this.stop();
         }
     },
 
@@ -51,5 +55,10 @@ module.exports = NodeHelper.create({
         if (liveMatch) {
             this.getData();
         }
+    },
+
+    stop() {
+        clearInterval(this.liveInterval);
+        clearInterval(this.reloadInterval);
     }
 });
