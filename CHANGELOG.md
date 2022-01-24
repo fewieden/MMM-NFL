@@ -8,6 +8,7 @@
 
 * Nunjuck templates
 * Remote team logos
+* Readded live game fetching
 * Added instructions for global config options
 * Github actions: `changelog` and `build`
 * Github config files
@@ -15,6 +16,7 @@
 ### Changed
 
 * Data structure
+* Dimmed bye week
 
 ### Removed
 

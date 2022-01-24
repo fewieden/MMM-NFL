@@ -57,7 +57,7 @@
             {% endfor %}
             {% for team in focusedTeamsWithByeWeeks %}
                 <tr class="row">
-                    <td>{{ "BYE_WEEK" | translate }}</td>
+                    <td><span class="dimmed">{{ "BYE_WEEK" | translate }}</span></td>
                     <td class="align-right">{{ team }}</td>
                     <td><img src="https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/{{ team }}.png" class="logo {{ "gray" if not config.colored }}"/></td>
                 </tr>
