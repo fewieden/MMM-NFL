@@ -8,12 +8,15 @@
 /* eslint-env node */
 
 const NodeHelper = require('node_helper');
+const Log = require('logger');
 
 const ESPN = require('./espn');
 
 const ONE_MINUTE = 60 * 1000;
 
 module.exports = NodeHelper.create({
+    requiresVersion: '2.15.0',
+
     scores: [],
 
     socketNotificationReceived(notification, payload) {
@@ -35,7 +38,7 @@ module.exports = NodeHelper.create({
             this.scores = data.scores;
             this.sendSocketNotification('SCORES', data);
         } catch (error) {
-            console.log(`Error getting NFL scores ${error}`);
+            Log.error(`Error getting NFL scores ${error}`);
         }
     },
 

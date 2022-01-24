@@ -9,6 +9,7 @@
 * Nunjuck templates
 * Remote team logos
 * Readded live game fetching
+* Integrated MagicMirror logger on server side
 * Added instructions for global config options
 * Github actions: `changelog` and `build`
 * Github config files
