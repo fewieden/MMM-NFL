@@ -1,0 +1,25 @@
+<h1>{{ data.fns.translate(data.type) }}</h1>
+<table class="MMM-NFL statistics table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th colspan="2">{{ data.fns.translate("PLAYER") }}</th>
+            <th colspan="2">{{ data.fns.translate("TEAM") }}</th>
+            <th>{{ data.fns.translate("UNIT") }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in data.statistics %}
+            <tr class="centered-row {% if loop.index0 === data.boundaries.focusTeamIndex %}bright{% endif %}">
+                <td>{{ loop.index }}</td>
+                <td><img src="{{ entry.avatar }}" class="logo {{ "gray" if not data.config.colored }}"/></td>
+                <td class="align-left">{{ entry.name }}</td>
+                <td class="align-right">{{ entry.team }}</td>
+                <td><img src="{{ entry.logo }}" class="logo {{ "gray" if not data.config.colored }}"/></td>
+                <td>{{ entry.value }}</td>
+            </tr>
+        {% else %}
+            <tr><td>No entries</td></tr>
+        {% endfor %}
+    </tbody>
+</table>

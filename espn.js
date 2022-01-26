@@ -1,7 +1,5 @@
 const fetch = require('node-fetch');
 
-const BASE_URL = 'http://site.api.espn.com/apis/site/v2/sports/football/nfl';
-
 const seasonStageMapping = {
     1: 'PRE',
     2: 'REG',
@@ -13,6 +11,29 @@ const teamNameMapping = {
     LAR: 'LA',
     WSH: 'WAS',
 };
+
+const statisticTypes = [
+    'passingYards',
+    'rushingYards',
+    'receivingYards',
+    'totalTackles',
+    'sacks',
+    'kickoffYards',
+    'interceptions',
+    'passingTouchdowns',
+    'quarterbackRating',
+    'rushingTouchdowns',
+    'receptions',
+    'receivingTouchdowns',
+    'totalPoints',
+    'totalTouchdowns',
+    'puntYards',
+    'passesDefended'
+];
+
+function getFullUrl(apiVersion, path) {
+    return `https://site.api.espn.com/apis/site/${apiVersion}/sports/football/nfl${path}`;
+}
 
 function getGameStatus(status = {}) {
     if (status.type?.state === 'pre') {
@@ -60,7 +81,7 @@ function mapEventEntry(event = {}) {
 }
 
 async function getData() {
-    const response = await fetch(`${BASE_URL}/scoreboard`);
+    const response = await fetch(getFullUrl('v2', '/scoreboard'));
 
     if (!response.ok) {
         throw new Error('failed to fetch scoreboard');
@@ -87,4 +108,36 @@ async function getData() {
     return {details, scores};
 }
 
-module.exports = {getData};
+function mapPlayerEntry(player = {}) {
+    return {
+        value: player.displayValue,
+        name: player.athlete.fullName,
+        avatar: player.athlete.headshot.href,
+        team: getTeamName(player),
+        logo: player?.team?.logos?.[0]?.href,
+    };
+}
+
+async function getStatistics(type) {
+    if (!statisticTypes.includes(type)) {
+        throw new Error(`Unsupported statistic type: ${type}`);
+    }
+
+    const response = await fetch(getFullUrl('v3', '/leaders'));
+
+    if (!response.ok) {
+        throw new Error('failed to fetch scoreboard');
+    }
+
+    const parsedResponse = await response.json();
+
+    const category = parsedResponse?.leaders?.categories?.find(c => c.name === type);
+
+    const players = category?.leaders || [];
+
+    const leaders = players.map(mapPlayerEntry);
+
+    return leaders;
+}
+
+module.exports = {getData, getStatistics};

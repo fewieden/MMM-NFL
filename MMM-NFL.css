@@ -4,18 +4,21 @@
     100% { opacity: 1; }
 }
 
-.MMM-NFL .table {
+.MMM-NFL .table,
+.MMM-Modal .MMM-NFL.statistics.table {
     border-spacing: 10px 0;
     border-collapse: separate;
     text-align: center;
 }
 
-.MMM-NFL .logo {
+.MMM-NFL .logo,
+.MMM-Modal .MMM-NFL.statistics .logo {
     margin-top: 3px;
     height: 25px;
 }
 
-.MMM-NFL .gray {
+.MMM-NFL .gray,
+.MMM-Modal .MMM-NFL.statistics .gray {
     -webkit-filter: grayscale(100%);
 }
 

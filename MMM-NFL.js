@@ -76,6 +76,18 @@ Module.register('MMM-NFL', {
             this.scores = payload.scores;
             this.details = payload.details;
             this.updateDom(300);
+        } else if (notification === 'STATISTICS') {
+            this.sendNotification('OPEN_MODAL', {
+                template: 'templates/Statistics.njk',
+                data: {
+                    config: this.config,
+                    type: payload.type,
+                    statistics: payload.statistics,
+                    fns: {
+                        translate: this.translate.bind(this)
+                    }
+                }
+            });
         }
     },
 

@@ -21,16 +21,18 @@ module.exports = NodeHelper.create({
     reloadInterval: null,
     liveInterval: null,
 
-    socketNotificationReceived(notification, payload) {
+    async socketNotificationReceived(notification, payload) {
         if (notification === 'CONFIG') {
             this.config = payload;
-            this.getData();
             this.reloadInterval = setInterval(() => {
                 this.getData();
             }, this.config.reloadInterval);
             this.liveInterval = setInterval(() => {
                 this.fetchOnLiveState();
             }, ONE_MINUTE);
+            await this.getData();
+        } else if (notification === 'STATISTICS') {
+            await this.getStatistics(payload.type);
         } else if (notification === 'SUSPEND') {
             this.stop();
         }
@@ -43,6 +45,15 @@ module.exports = NodeHelper.create({
             this.sendSocketNotification('SCORES', data);
         } catch (error) {
             Log.error(`Error getting NFL scores ${error}`);
+        }
+    },
+
+    async getStatistics(type) {
+        try {
+            const statistics = await ESPN.getStatistics(type);
+            this.sendSocketNotification('STATISTICS', {type, statistics});
+        } catch (error) {
+            Log.error(`Error getting NFL statistics ${error}`);
         }
     },
 
