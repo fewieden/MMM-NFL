@@ -1,5 +1,5 @@
 <header>
-    NFL {{modes[details.stage] or details.stage}} {{details.season}} Week {{details.week}}
+    NFL {{modes[details.stage] or details.stage}} {{details.season}} {{ "WEEK" | translate({weekNumber: details.week})}}
 </header>
 {% if not scores %}
     <div class="dimmed light">{{ "LOADING" | translate }}</div>
@@ -28,7 +28,7 @@
                         {% if includes([1, 2, 3, 4, "halftime", "overtime"], game.status) %}
                             <div class="{{ "live" if game.remainingTime }}">{{ states[game.status] | translate }}</div>
                             {% if game.remainingTime %}
-                                <div class="live">{{game.remainingTime}} {{ "TIME_LEFT" | translate }}</div>
+                                <div class="live">{{ "TIME_REMAINING" | translate({remainingTime: game.remainingTime}) }}</div>
                             {% endif %}
                         {% elif game.status === "pregame" %}
                             {{ game.timestamp | formatDate }}
