@@ -1,8 +1,6 @@
 # MMM-NFL Changelog
 
-## [Unreleased]
-
-### Fixed
+## 1.3.0
 
 ### Added
 
@@ -20,6 +18,8 @@
 
 * Data structure
 * Dimmed bye week
+* Project config files
+* Dependency updates
 
 ### Removed
 
