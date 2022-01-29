@@ -10,6 +10,7 @@
 * Remote team logos
 * Readded live game fetching
 * Integrated MagicMirror logger on server side
+* Integrated [MMM-Modal](https://github.com/fewieden/MMM-Modal)
 * Implemented suspend, resume and stop behavior
 * Added instructions for global config options
 * Github actions: `changelog` and `build`
@@ -22,8 +23,6 @@
 
 ### Removed
 
-* Help and statistic modals
-* MMM-voice integration
 * API provider: NFL XML API
 * Local team logos
 * Config option: `helmets`

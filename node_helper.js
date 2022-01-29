@@ -14,6 +14,25 @@ const ESPN = require('./espn');
 
 const ONE_MINUTE = 60 * 1000;
 
+const commandStatisticMapping = {
+    passingTouchdowns: ['PASSING', 'TOUCHDOWNS'],
+    rushingTouchdowns: ['RUSHING', 'TOUCHDOWNS'],
+    receivingTouchdowns: ['RECEIVING', 'TOUCHDOWNS'],
+    totalTouchdowns: ['TOTAL', 'TOUCHDOWNS'],
+    passingYards: ['PASSING', 'YARDS'],
+    rushingYards: ['RUSHING', 'YARDS'],
+    receivingYards: ['RECEIVING', 'YARDS'],
+    sacks: ['SACKS'],
+    interceptions: ['INTERCEPTIONS'],
+    totalTackles: ['TACKLES'],
+    quarterbackRating: ['QUARTERBACK', 'RATING'],
+    receptions: ['RECEPTIONS'],
+    passesDefended: ['PASSES', 'DEFENDED'],
+    totalPoints: ['TOTAL', 'POINTS'],
+    puntYards: ['PUNT', 'YARDS'],
+    kickoffYards: ['KICKOFF', 'YARDS']
+};
+
 module.exports = NodeHelper.create({
     requiresVersion: '2.15.0',
 
@@ -31,8 +50,8 @@ module.exports = NodeHelper.create({
                 this.fetchOnLiveState();
             }, ONE_MINUTE);
             await this.getData();
-        } else if (notification === 'STATISTICS') {
-            await this.getStatistics(payload.type);
+        } else if (notification === 'VOICE_COMMAND') {
+            await this.handleVoiceCommand(payload);
         } else if (notification === 'SUSPEND') {
             this.stop();
         }
@@ -48,8 +67,16 @@ module.exports = NodeHelper.create({
         }
     },
 
-    async getStatistics(type) {
+    async getStatisticsFromVoiceCommand(command) {
         try {
+            let type = Object.keys(commandStatisticMapping)[0];
+            for (const statisticType in commandStatisticMapping) {
+                const matching = commandStatisticMapping[statisticType].every(word => command.includes(word));
+                if (matching) {
+                    type = statisticType;
+                    break;
+                }
+            }
             const statistics = await ESPN.getStatistics(type);
             this.sendSocketNotification('STATISTICS', {type, statistics});
         } catch (error) {
@@ -65,6 +92,28 @@ module.exports = NodeHelper.create({
 
         if (liveMatch) {
             this.getData();
+        }
+    },
+
+    shouldCloseOpenModal(command) {
+        return command.includes('HELP') && command.includes('CLOSE') || command.includes('STATISTIC') && command.includes('HIDE');
+    },
+
+    shouldShowHelpModal(command) {
+        return command.includes('HELP') && command.includes('OPEN');
+    },
+
+    shouldShowStatisticModal(command) {
+        return command.includes('SHOW') && command.includes('STATISTIC');
+    },
+
+    async handleVoiceCommand(command = '') {
+        if (this.shouldCloseOpenModal(command)) {
+            this.sendSocketNotification('CLOSE_MODAL');
+        } else if (this.shouldShowHelpModal(command)) {
+            this.sendSocketNotification('OPEN_HELP_MODAL');
+        } else if (this.shouldShowStatisticModal(command)) {
+            await this.getStatisticsFromVoiceCommand(command);
         }
     },
 
