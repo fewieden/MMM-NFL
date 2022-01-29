@@ -105,7 +105,7 @@ async function getData() {
         return a.timestamp > b.timestamp ? 1 : -1
     });
 
-    return {details, scores};
+    return { details, scores };
 }
 
 function mapPlayerEntry(player = {}) {
@@ -140,4 +140,4 @@ async function getStatistics(type) {
     return leaders;
 }
 
-module.exports = {getData, getStatistics};
+module.exports = { getData, getStatistics };

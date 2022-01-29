@@ -78,7 +78,7 @@ module.exports = NodeHelper.create({
                 }
             }
             const statistics = await ESPN.getStatistics(type);
-            this.sendSocketNotification('STATISTICS', {type, statistics});
+            this.sendSocketNotification('STATISTICS', { type, statistics });
         } catch (error) {
             Log.error(`Error getting NFL statistics ${error}`);
         }

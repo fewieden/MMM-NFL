@@ -16,7 +16,7 @@ Module.register('MMM-NFL', {
     },
 
     details: {
-        season: (new Date()).getFullYear(),
+        season: new Date().getFullYear(),
         stage: 'REG'
     },
 
@@ -61,10 +61,10 @@ Module.register('MMM-NFL', {
     },
 
     getTemplateData() {
-        let focusedTeamsWithByeWeeks = [];
+        const focusedTeamsWithByeWeeks = [];
         if (Array.isArray(this.config.focus_on) && this.scores) {
             for (const team of this.config.focus_on) {
-                let match = this.scores.find(m => team === m.homeTeam || team === m.awayTeam);
+                const match = this.scores.find(m => team === m.homeTeam || team === m.awayTeam);
                 if (!match) {
                     focusedTeamsWithByeWeeks.push(team);
                 }
@@ -134,14 +134,14 @@ Module.register('MMM-NFL', {
         }
     },
 
-    openStatisticsModal({type, statistics}) {
+    openStatisticsModal({ type, statistics }) {
         this.sendNotification('OPEN_MODAL', {
             template: 'templates/StatisticsModal.njk',
             data: {
                 type,
                 statistics,
                 config: this.config,
-                fns: {translate: this.translate.bind(this)}
+                fns: { translate: this.translate.bind(this) }
             }
         });
     },
@@ -151,7 +151,7 @@ Module.register('MMM-NFL', {
             template: 'templates/HelpModal.njk',
             data: {
                 ...this.getVoiceData(),
-                fns: {translate: this.translate.bind(this)}
+                fns: { translate: this.translate.bind(this) }
             }
         });
     },
@@ -175,12 +175,8 @@ Module.register('MMM-NFL', {
     },
 
     addFilters() {
-        this.nunjucksEnvironment().addFilter('formatDate', timestamp => {
-            return moment(timestamp).format(this.config.format);
-        });
+        this.nunjucksEnvironment().addFilter('formatDate', timestamp => moment(timestamp).format(this.config.format));
 
-        this.nunjucksEnvironment().addFilter('iconUrl', teamName => {
-            return this.file(`icons/${teamName}${this.config.helmets ? '_helmet' : ''}.png`);
-        });
+        this.nunjucksEnvironment().addFilter('iconUrl', teamName => this.file(`icons/${teamName}${this.config.helmets ? '_helmet' : ''}.png`));
     }
 });
