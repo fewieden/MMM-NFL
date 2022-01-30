@@ -1,5 +1,15 @@
 # MMM-NFL Changelog
 
+## [Unreleased]
+
+### Fixed
+
+### Added
+
+### Changed
+
+### Removed
+
 ## 1.3.0
 
 MagicMirror² version >= 2.15.0 required.
