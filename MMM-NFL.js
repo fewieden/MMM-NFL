@@ -64,23 +64,22 @@ Module.register('MMM-NFL', {
         return this.scores.find(m => team === m.homeTeam || team === m.awayTeam);
     },
 
-    getTemplateData() {
-        const focusedTeamsWithByeWeeks = [];
-        if (Array.isArray(this.config.focus_on) && this.scores) {
-            for (const team of this.config.focus_on) {
-                if (!this.findTeamInScores(team)) {
-                    focusedTeamsWithByeWeeks.push(team);
-                }
-            }
+    getFocusedTeamsWithByeWeeks() {
+        if (!Array.isArray(this.config.focus_on) || !Array.isArray(this.scores)) {
+            return [];
         }
 
+        return this.config.focus_on.filter(team => !this.findTeamInScores(team));
+    },
+
+    getTemplateData() {
         return {
             states: this.states,
             modes: this.mode,
             details: this.details,
             config: this.config,
             scores: this.scores,
-            focusedTeamsWithByeWeeks
+            focusedTeamsWithByeWeeks: this.getFocusedTeamsWithByeWeeks()
         };
     },
 
