@@ -60,12 +60,15 @@ Module.register('MMM-NFL', {
         return `templates/${this.name}.njk`;
     },
 
+    findTeamInScores(team) {
+        return this.scores.find(m => team === m.homeTeam || team === m.awayTeam);
+    },
+
     getTemplateData() {
         const focusedTeamsWithByeWeeks = [];
         if (Array.isArray(this.config.focus_on) && this.scores) {
             for (const team of this.config.focus_on) {
-                const match = this.scores.find(m => team === m.homeTeam || team === m.awayTeam);
-                if (!match) {
+                if (!this.findTeamInScores(team)) {
                     focusedTeamsWithByeWeeks.push(team);
                 }
             }

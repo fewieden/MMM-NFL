@@ -35,22 +35,24 @@ function getFullUrl(apiVersion, path) {
     return `https://site.api.espn.com/apis/site/${apiVersion}/sports/football/nfl${path}`;
 }
 
+function getPostGameStatus(period) {
+    return period > 4 ? 'final-overtime' : 'final';
+}
+
+function getInGameStatus(period) {
+    return period > 4 ? 'overtime' : period;
+}
+
 function getGameStatus(status = {}) {
     if (status.type?.state === 'pre') {
         return 'pregame';
     } else if (status.type?.name === 'STATUS_HALFTIME') {
         return 'halftime';
     } else if (status.type?.state === 'post') {
-        if (status.period > 4) {
-            return 'final-overtime';
-        }
-
-        return 'final';
-    } else if (status.period > 4) {
-        return 'overtime';
+        return getPostGameStatus(status.period);
     }
 
-    return status.period;
+    return getInGameStatus;
 }
 
 function getTeamName(competitor = {}) {
