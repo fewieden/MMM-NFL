@@ -1,4 +1,4 @@
-@-webkit-keyframes MMM-NFL-pulse {
+@keyframes mmm-nfl-pulse {
     0% { opacity: 1; }
     50% { opacity: 0; }
     100% { opacity: 1; }
@@ -19,7 +19,7 @@
 
 .MMM-NFL .gray,
 .MMM-Modal .MMM-NFL.statistics .gray {
-    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
 }
 
 .MMM-NFL .row {
@@ -27,7 +27,7 @@
 }
 
 .MMM-NFL .redzone {
-    -webkit-animation: MMM-NFL-pulse 2s infinite;
+    animation: mmm-nfl-pulse 2s infinite;
 }
 
 .MMM-NFL .live {
