@@ -1,21 +1,18 @@
-# MMM-NFL [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/fewieden/MMM-NFL/master/LICENSE) [![Build Status](https://travis-ci.org/fewieden/MMM-NFL.svg?branch=master)](https://travis-ci.org/fewieden/MMM-NFL) [![Code Climate](https://codeclimate.com/github/fewieden/MMM-NFL/badges/gpa.svg?style=flat)](https://codeclimate.com/github/fewieden/MMM-NFL) [![Known Vulnerabilities](https://snyk.io/test/github/fewieden/mmm-nfl/badge.svg)](https://snyk.io/test/github/fewieden/mmm-nfl)
+# MMM-NFL
+
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/fewieden/MMM-NFL/master/LICENSE) ![Build status](https://github.com/fewieden/MMM-NFL/workflows/build/badge.svg) [![Code Climate](https://codeclimate.com/github/fewieden/MMM-NFL/badges/gpa.svg?style=flat)](https://codeclimate.com/github/fewieden/MMM-NFL) [![Known Vulnerabilities](https://snyk.io/test/github/fewieden/mmm-nfl/badge.svg)](https://snyk.io/test/github/fewieden/mmm-nfl)
 
 National Football League Module for MagicMirror<sup>2</sup>
 
 ## Example
 
-![](.github/example.jpg) ![](.github/example2.jpg) ![](.github/example_focus.jpg) ![](.github/example_statistic.jpg) ![](.github/example_help.jpg) ![](.github/example_bye_week.png)
+![](.github/regular-season.png) ![](.github/post-season.png) ![](.github/statistic-modal.png) ![](.github/help-modal.png)
 
 ## Dependencies
 
 * An installation of [MagicMirror<sup>2</sup>](https://github.com/MichMich/MagicMirror)
-* OPTIONAL: [Voice Control](https://github.com/fewieden/MMM-voice)
 * npm
-* [jsdom](https://www.npmjs.com/package/jsdom)
-* [moment-timezone](https://www.npmjs.com/package/moment-timezone)
 * [node-fetch](https://www.npmjs.com/package/node-fetch)
-* [request](https://www.npmjs.com/package/request)
-* [xml2js](https://www.npmjs.com/package/xml2js)
 
 ## Installation
 
@@ -34,21 +31,31 @@ National Football League Module for MagicMirror<sup>2</sup>
 
 1. Run command `npm install --production` in `~/MagicMirror/modules/MMM-NFL` directory.
 
+## Global config
+
+| **Option** | **Default** | **Description** |
+| --- | --- | --- |
+| `locale` | `undefined` | By default it is using your system settings. You can specify the locale in the global MagicMirror config. Possible values are for e.g.: `'en-US'` or `'de-DE'`. |
+
+To set a global config you have to set the value in your config.js file inside the MagicMirror project.
+
+![](.github/global.png)
+
 ## Config Options
 
 | **Option** | **Default** | **Description** |
 | --- | --- | --- |
-| `colored` | `false` | Remove black/white filter of logos/helmets. |
-| `helmets` | `false` | Show helmets instead of logo. |
+| `colored` | `false` | Remove black/white filter of logos. |
 | `focus_on` | `false` | Display only matches with teams of this array e.g. `['NYG', 'DAL', 'NE']`. |
 | `format` | `'ddd h:mm'` | In which format the date should be displayed. [All Options](http://momentjs.com/docs/#/displaying/format/) |
 | `reloadInterval` | `1800000` (30 mins) | How often should the data be fetched. |
 | `reverseTeams` | `false` | Flag to switch order of home and away team. |
 | `tableSize` | `'small'` | Font size of table. Possible values: `'xsmall'`, `'small'`, `'medium'`, `'large'` and `'xlarge'` |
 
-## OPTIONAL: Voice Control
+## OPTIONAL: Voice Control and Modal
 
-This module supports voice control by [MMM-voice](https://github.com/fewieden/MMM-voice). In order to use this feature, it's required to install the voice module. There are no extra config options for voice control needed.
+This module supports voice control by [MMM-voice](https://github.com/fewieden/MMM-voice) and [MMM-Modal](https://github.com/fewieden/MMM-Modal).
+In order to use this feature, it's required to install the voice and modal modules. There are no extra config options for voice control and modals needed.
 
 ### Mode
 
@@ -58,14 +65,24 @@ The voice control mode for this module is `FOOTBALL`
 
 * OPEN HELP -> Shows the information from the readme here with mode and all commands.
 * CLOSE HELP -> Hides the help information.
-* SHOW HELMETS -> Switch team logos to helmets. (Effect stays until your mirror restarts, for permanent change you have to edit the config)
-* SHOW LOGOS -> Switch team helmets to logos. (Effect stays until your mirror restarts, for permanent change you have to edit the config)
-* COLOR ON -> Switch color for team logos/helmets on. (Effect stays until your mirror restarts, for permanent change you have to edit the config)
-* COLOR OFF -> Switch color for team logos/helmets off. (Effect stays until your mirror restarts, for permanent change you have to edit the config)
-* SHOW PASSING YARDS STATISTIC -> Shows statistic of Top 5 passing players.
-* SHOW RUSHING YARDS STATISTIC -> Shows statistic of Top 5 rushing players.
-* SHOW RECEIVING YARDS STATISTIC -> Shows statistic of Top 5 receiving players.
-* SHOW TACKLES STATISTIC -> Shows statistic of Top 5 tackling players.
-* SHOW SACKS STATISTIC -> Shows statistic of Top 5 sacking players.
-* SHOW INTERCEPTIONS STATISTIC -> Shows statistic of Top 5 intercepting players.
+* SHOW PASSING YARDS STATISTIC -> Shows statistic of players with most passing yards.
+* SHOW RUSHING YARDS STATISTIC -> Shows statistic of players with most rushing yards.
+* SHOW RECEIVING YARDS STATISTIC -> Shows statistic of players with most receiving yards.
+* SHOW TACKLES STATISTIC -> Shows statistic of players with most tackles.
+* SHOW SACKS STATISTIC -> Shows statistic of players with most sacks.
+* SHOW KICKOFF YARDS STATISTIC -> Shows statistic of players with most kickoff yards.
+* SHOW INTERCEPTIONS STATISTIC -> Shows statistic of players with most interceptions.
+* SHOW PASSING TOUCHDOWNS STATISTIC -> Shows statistic of players with most passing touchdowns.
+* SHOW QUARTERBACK RATING STATISTIC -> Shows statistic of quarterbacks with best rating.
+* SHOW RUSHING TOUCHDOWNS STATISTIC -> Shows statistic of players with most rushing touchdowns.
+* SHOW RECEPTIONS STATISTIC -> Shows statistic of players with most receptions.
+* SHOW RECEIVING TOUCHDOWNS STATISTIC -> Shows statistic of players with most receiving touchdowns.
+* SHOW TOTAL POINTS STATISTIC -> Shows statistic of players with most points.
+* SHOW TOTAL TOUCHDOWNS STATISTIC -> Shows statistic of players with most touchdowns.
+* SHOW PUNT YARDS STATISTIC -> Shows statistic of players with most punt yards.
+* SHOW PASSES DEFENDED STATISTIC -> Shows statistic of players with most passes defended.
 * HIDE STATISTIC -> Hide statistic informations
+
+## Developer
+
+* `npm run lint` - Lints JS and CSS files.

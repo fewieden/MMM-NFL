@@ -1,0 +1,67 @@
+<header>
+    NFL {{modes[details.stage] or details.stage}} {{details.season}} {{ "WEEK" | translate({weekNumber: details.week})}}
+</header>
+{% if not scores %}
+    <div class="dimmed light">{{ "LOADING" | translate }}</div>
+{% else %}
+    <table class="table {{ config.tableSize }}">
+        <thead>
+            <tr>
+                <th><i class="fa fa-calendar"></i></th>
+                <th colspan="3">{{ "AWAY" if config.reverseTeams else "HOME" | translate }}</th>
+                <th></th>
+                <th colspan="3">{{ "HOME" if config.reverseTeams else "AWAY" | translate }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for game in scores %}
+                {% if config.reverseTeams %}
+                    {% set firstTeamPrefix = 'away' %}
+                    {% set secondTeamPrefix = 'home' %}
+                {% else %}
+                    {% set firstTeamPrefix = 'home' %}
+                    {% set secondTeamPrefix = 'away' %}
+                {% endif %}
+
+                <tr class="row">
+                    <td>
+                        {% if includes([1, 2, 3, 4, "halftime", "overtime"], game.status) %}
+                            <div class="{{ "live" if game.remainingTime }}">{{ states[game.status] | translate }}</div>
+                            {% if game.remainingTime %}
+                                <div class="live">{{ "TIME_REMAINING" | translate({remainingTime: game.remainingTime}) }}</div>
+                            {% endif %}
+                        {% elif game.status === "pregame" %}
+                            {{ game.timestamp | formatDate }}
+                        {% else %}
+                            <span class="dimmed">{{ states[game.status] | translate }}</span>
+                        {% endif %}
+                    </td>
+                    <td class="align-right">
+                        {% if game.ballPossession === game[firstTeamPrefix + "Team"] %}
+                            <i class="fa fa-football-ball ball-home {{ "redzone" if game.inRedZone }}"></i>
+                        {% endif %}
+                        <span>{{ game[firstTeamPrefix + "Team"] }}</span>
+                    </td>
+                    <td><img src="{{ game[firstTeamPrefix + "Logo"] }}" class="logo {{ "gray" if not config.colored }}"/></td>
+                    <td>{{ game[firstTeamPrefix + "Score"] }}</td>
+                    <td>:</td>
+                    <td>{{ game[secondTeamPrefix + "Score"] }}</td>
+                    <td><img src="{{ game[secondTeamPrefix + "Logo"] }}" class="logo {{ "gray" if not config.colored }}"/></td>
+                    <td class="align-left">
+                        <span>{{ game[secondTeamPrefix + "Team"] }}</span>
+                        {% if game.ballPossession === game[secondTeamPrefix + "Team"] %}
+                            <i class="fa fa-football-ball ball-away {{ "redzone" if game.inRedZone }}"></i>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            {% for team in focusedTeamsWithByeWeeks %}
+                <tr class="row">
+                    <td><span class="dimmed">{{ "BYE_WEEK" | translate }}</span></td>
+                    <td class="align-right">{{ team }}</td>
+                    <td><img src="https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/{{ team }}.png" class="logo {{ "gray" if not config.colored }}"/></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

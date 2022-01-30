@@ -1,10 +1,8 @@
 const fetch = require('node-fetch');
 
-const BASE_URL = 'http://site.api.espn.com/apis/site/v2/sports/football/nfl';
-
-const seasonTypeMapping = {
-    1: 'P',
-    2: 'R',
+const seasonStageMapping = {
+    1: 'PRE',
+    2: 'REG',
     3: 'POST',
     4: 'OFF',
 };
@@ -14,22 +12,47 @@ const teamNameMapping = {
     WSH: 'WAS',
 };
 
+const statisticTypes = [
+    'passingYards',
+    'rushingYards',
+    'receivingYards',
+    'totalTackles',
+    'sacks',
+    'kickoffYards',
+    'interceptions',
+    'passingTouchdowns',
+    'quarterbackRating',
+    'rushingTouchdowns',
+    'receptions',
+    'receivingTouchdowns',
+    'totalPoints',
+    'totalTouchdowns',
+    'puntYards',
+    'passesDefended'
+];
+
+function getFullUrl(apiVersion, path) {
+    return `https://site.api.espn.com/apis/site/${apiVersion}/sports/football/nfl${path}`;
+}
+
+function getPostGameStatus(period) {
+    return period > 4 ? 'final-overtime' : 'final';
+}
+
+function getInGameStatus(period) {
+    return period > 4 ? 'overtime' : period;
+}
+
 function getGameStatus(status = {}) {
     if (status.type?.state === 'pre') {
-        return 'P';
+        return 'pregame';
     } else if (status.type?.name === 'STATUS_HALFTIME') {
-        return 'H';
+        return 'halftime';
     } else if (status.type?.state === 'post') {
-        if (status.period > 4) {
-            return 'FO';
-        }
-
-        return 'F';
-    } else if (status.period > 4) {
-        return 'OT';
+        return getPostGameStatus(status.period);
     }
 
-    return status.period;
+    return getInGameStatus(status.period);
 }
 
 function getTeamName(competitor = {}) {
@@ -40,30 +63,27 @@ function getTeamName(competitor = {}) {
 
 function mapEventEntry(event = {}) {
     const ongoing = !['pre', 'post'].includes(event.status?.type?.state);
-    const remainingTime = ongoing && event.status?.displayClock;
 
-    const rz = event.competitions?.[0]?.situation?.isRedZone ? '1' : '0';
     const possessionTeamId = event.competitions?.[0]?.situation?.possession;
     const possessionTeam = event.competitions?.[0]?.competitors?.find(c => c.id === possessionTeamId);
-    const p = getTeamName(possessionTeam);
 
     return {
-        $: {
-            h: getTeamName(event.competitions?.[0]?.competitors?.[0]),
-            hs: event.competitions?.[0]?.competitors?.[0]?.score,
-            q: getGameStatus(event.status),
-            starttime: event.date,
-            v: getTeamName(event.competitions?.[0]?.competitors?.[1]),
-            vs: event.competitions?.[0]?.competitors?.[1]?.score,
-            k: remainingTime,
-            rz,
-            p
-        }
+        timestamp: event.date,
+        status: getGameStatus(event.status),
+        remainingTime: ongoing && event.status?.displayClock,
+        ballPossession: getTeamName(possessionTeam),
+        inRedZone: event.competitions?.[0]?.situation?.isRedZone,
+        homeTeam: getTeamName(event.competitions?.[0]?.competitors?.[0]),
+        homeScore: event.competitions?.[0]?.competitors?.[0]?.score,
+        homeLogo: event.competitions?.[0]?.competitors?.[0]?.team?.logo,
+        awayTeam: getTeamName(event.competitions?.[0]?.competitors?.[1]),
+        awayScore: event.competitions?.[0]?.competitors?.[1]?.score,
+        awayLogo: event.competitions?.[0]?.competitors?.[1]?.team?.logo
     };
 }
 
 async function getData() {
-    const response = await fetch(`${BASE_URL}/scoreboard`);
+    const response = await fetch(getFullUrl('v2', '/scoreboard'));
 
     if (!response.ok) {
         throw new Error('failed to fetch scoreboard');
@@ -72,22 +92,54 @@ async function getData() {
     const parsedResponse = await response.json();
 
     const details = {
-        w: parsedResponse?.week?.number,
-        y: parsedResponse?.season?.year,
-        t: seasonTypeMapping[parsedResponse?.season?.type]
+        week: parsedResponse?.week?.number,
+        season: parsedResponse?.season?.year,
+        stage: seasonStageMapping[parsedResponse?.season?.type]
     };
 
     const events = parsedResponse?.events || [];
 
     const scores = events.map(mapEventEntry).sort((a, b) => {
-        if (a.$.starttime === b.$.starttime) {
+        if (a.timestamp === b.timestamp) {
             return 0;
         }
 
-        return a.$.starttime > b.$.starttime ? 1 : -1
+        return a.timestamp > b.timestamp ? 1 : -1
     });
 
-    return {details, scores};
+    return { details, scores };
 }
 
-module.exports = {getData};
+function mapPlayerEntry(player = {}) {
+    return {
+        value: player.displayValue,
+        name: player.athlete.fullName,
+        avatar: player.athlete.headshot.href,
+        team: getTeamName(player),
+        logo: player?.team?.logos?.[0]?.href,
+    };
+}
+
+async function getStatistics(type) {
+    if (!statisticTypes.includes(type)) {
+        throw new Error(`Unsupported statistic type: ${type}`);
+    }
+
+    const response = await fetch(getFullUrl('v3', '/leaders'));
+
+    if (!response.ok) {
+        throw new Error('failed to fetch scoreboard');
+    }
+
+    const parsedResponse = await response.json();
+
+    const category = parsedResponse?.leaders?.categories?.find(c => c.name === type);
+
+    const players = category?.leaders || [];
+
+    const leaders = players.map(mapPlayerEntry);
+
+    return leaders;
+}
+
+module.exports = { getData, getStatistics };

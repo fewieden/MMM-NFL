@@ -1,5 +1,36 @@
 # MMM-NFL Changelog
 
+## 1.3.0
+
+MagicMirror² version >= 2.15.0 required.
+
+### Added
+
+* Nunjuck templates
+* Remote team logos
+* Readded live game fetching
+* More statistic types
+* Integrated MagicMirror logger on server side
+* Integrated [MMM-Modal](https://github.com/fewieden/MMM-Modal)
+* Implemented suspend, resume and stop behavior
+* Added instructions for global config options
+* Github actions: `changelog` and `build`
+* Github config files
+
+### Changed
+
+* Data structure
+* Dimmed bye week
+* Project config files
+* Dependency updates
+* Preview pictures
+
+### Removed
+
+* API provider: NFL XML API
+* Local team logos
+* Config option: `helmets`
+
 ## [1.2.1]
 
 ### Added
