@@ -2,11 +2,14 @@
 
 ## 1.3.0
 
+MagicMirror² version >= 2.15.0 required.
+
 ### Added
 
 * Nunjuck templates
 * Remote team logos
 * Readded live game fetching
+* More statistic types
 * Integrated MagicMirror logger on server side
 * Integrated [MMM-Modal](https://github.com/fewieden/MMM-Modal)
 * Implemented suspend, resume and stop behavior
@@ -20,6 +23,7 @@
 * Dimmed bye week
 * Project config files
 * Dependency updates
+* Preview pictures
 
 ### Removed
 

@@ -52,7 +52,7 @@ function getGameStatus(status = {}) {
         return getPostGameStatus(status.period);
     }
 
-    return getInGameStatus;
+    return getInGameStatus(status.period);
 }
 
 function getTeamName(competitor = {}) {
