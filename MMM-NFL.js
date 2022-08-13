@@ -72,13 +72,21 @@ Module.register('MMM-NFL', {
         return this.config.focus_on.filter(team => !this.findTeamInScores(team));
     },
 
+    getFilteredScores() {
+        if (!Array.isArray(this.config.focus_on) || !Array.isArray(this.scores)) {
+            return this.scores;
+        }
+
+        return this.scores.filter(m => this.config.focus_on.includes(m.homeTeam) || this.config.focus_on.includes(m.awayTeam));
+    },
+
     getTemplateData() {
         return {
             states: this.states,
             modes: this.mode,
             details: this.details,
             config: this.config,
-            scores: this.scores,
+            scores: this.getFilteredScores(),
             focusedTeamsWithByeWeeks: this.getFocusedTeamsWithByeWeeks()
         };
     },
