@@ -1,16 +1,14 @@
 # MMM-NFL Changelog
 
-## [Unreleased]
+## 1.3.1
 
 ### Fixed
 
 - [Config option `focus_on` didn't filter match list](https://github.com/fewieden/MMM-NFL/issues/55)
 
-### Added
-
-### Changed
-
 ### Removed
+
+- TravisCI integration
 
 ## 1.3.0
 
